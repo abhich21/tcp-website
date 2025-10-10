@@ -1,26 +1,25 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  background-image: radial-gradient(circle at 50% 30%, rgba(255, 115, 0, 0.2), transparent 10%), url('/02.jpg');
+ /* Add these two lines */
+  background-size: cover, cover; 
+  background-repeat: no-repeat, no-repeat;
+  
+  /* You may also want to center the image */
+  background-position: center, center;
+  z-index: -1;
+  opacity: 0.4;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* Embla Carousel Styles */
+/* Final Embla Carousel Styles */
+/* Final Embla Carousel Styles - CORRECTED */
+/* === FINAL Embla Carousel CSS === */
+/* === FINAL Embla Carousel CSS === */
