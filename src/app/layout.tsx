@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat} from "next/font/google";
-import DarkVeil from '../components/bg/DarkVeil';
+// REMOVED: import DarkVeil from '../components/bg/DarkVeil';
 import "./globals.css";
 import Header from "@/components/Header/Header";
 
@@ -23,17 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* Font variables and base styling are kept here for all pages */}
       <body className={`${inter.variable} ${montserrat.variable} bg-[#0D0D0D] text-white`}>
         
-        {/* 1. Background Component Container */}
-        <div className="fixed top-0 left-0 w-full h-screen -z-10 ">
-          <DarkVeil 
-            noiseIntensity={0.05} 
-            hueShift={220}
-          />
-        </div>
-
-        {/* 2. Your page content sits on top */}
+        
+        {/* REMOVED: Background Component Container is moved to page.tsx / portfolio/layout.tsx */}
+        {/* The Header (navbar) remains here to wrap all content */}
         <Header />
         {children}
         

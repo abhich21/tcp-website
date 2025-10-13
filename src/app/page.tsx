@@ -1,13 +1,19 @@
-import Hero from "@/components/Hero/Hero"; // 1. Import Hero
+import Hero from "@/components/Hero/Hero";
 import ShowReel from "@/components/ShowReel/ShowReels";
 import PortfolioSection from "@/components/portfolio-section/PortfolioSection";
+// Import the new wrapper component
+import DarkVeilWrapper from "@/components/bg/DarkVeilWrapper"; 
+
 
 export default function Home() {
   return (
     <main>
-      <Hero /> {/* 2. Add the Hero component here */}
+      {/* USE THE WRAPPER: Replaces the direct dynamic import block */}
+      <DarkVeilWrapper />
+      
+      <Hero />
       <ShowReel />
-      <PortfolioSection /> {/* 2. Add the new section */}
+      <PortfolioSection />
     </main>
   );
 }
