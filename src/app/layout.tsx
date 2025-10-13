@@ -22,6 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    
     <html lang="en">
       <body className={`${inter.variable} ${montserrat.variable} bg-[#0D0D0D] text-white`}>
         
@@ -38,6 +39,7 @@ export default function RootLayout({
         {children}
         
       </body>
+ 
     </html>
   );
 }

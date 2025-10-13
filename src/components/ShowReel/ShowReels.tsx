@@ -1,45 +1,27 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import styles from './ShowReel.module.css';
-// 1. Import icons for the mute button
-import { VscMute, VscUnmute } from 'react-icons/vsc';
+// 1. Import the reusable GlassCard component
+import GlassCard from '../ui effects/GlassCard/GlassCard';
 
-const ShowReel = () => {
-  // State to track if the audio is muted
-  const [isMuted, setIsMuted] = useState(true);
-  // Ref to get direct access to the <video> element
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Function to toggle the video's muted property
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(!isMuted);
-    }
-  };
-
+const ShowReel: React.FC = () => {
   return (
     <section className={styles.section}>
       <h2 className={styles.title}>Show<span className="text-lime-400">Reel</span></h2>
 
-      <div className={styles.card}>
-        <video
-          ref={videoRef}
-          className={styles.video}
-          src="/"
-          poster="/showreel-poster.jpg"
-          autoPlay // 2. Add autoPlay
-          muted    // 3. Start muted
-          loop
-          playsInline
-        />
-
-        {/* 4. Add the new mute/unmute button */}
-        <button className={styles.muteButton} onClick={toggleMute}>
-          {isMuted ? <VscMute size={20} /> : <VscUnmute size={20} />}
-        </button>
-      </div>
+      {/* 2. Wrap the video container with the GlassCard component */}
+      <GlassCard className={styles.card}>
+        <div className={styles.videoContainer}>
+          <iframe
+            src="https://player.vimeo.com/video/1095892189?autoplay=1&loop=1&muted=1&autopause=0"
+            className={styles.reactPlayer}
+            style={{ border: 'none', width: '100%', height: '100%' }}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </GlassCard>
     </section>
   );
 };

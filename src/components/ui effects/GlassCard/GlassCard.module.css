@@ -1,0 +1,11 @@
+@reference"tailwindcss";
+.card {
+  /* Core glassmorphism styles */
+  border: 1px solid ;
+  @apply border border-white/10;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(50px);
+  
+  /* Default layout and shape */
+  @apply p-8 rounded-3xl;
+}
