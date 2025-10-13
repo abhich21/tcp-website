@@ -1,0 +1,59 @@
+@reference"tailwindcss";
+
+.section {
+  @apply w-full max-w-6xl mx-auto py-20 px-4;
+}
+
+/* Main "Designed to Design" card */
+.glassCard {
+  @apply grid md:grid-cols-2 gap-8 items-center p-8 rounded-3xl border border-white/10;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(50px);
+}
+/* .cardTextContent{
+   @apply md:col-span-2;
+} */
+
+.cardTextContent h2 {
+  @apply text-5xl font-bold text-gray-300 mb-4;
+}
+
+.cardTextContent p {
+  @apply text-lg text-gray-400 leading-relaxed;
+}
+
+.cardImageContainer {
+  @apply   overflow-hidden;
+}
+
+/* Projects Grid */
+.projectsTitle {
+  @apply text-center text-4xl font-bold mt-24 mb-12;
+}
+
+.projectsGrid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.projectCard {
+  @apply pb-4 rounded-2xl  transition-all duration-300;
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+}
+
+.projectCard:hover {
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.projectImageContainer {
+  @apply bg-black/50 h-80 rounded-lg mb-4;
+}
+
+.projectCard p {
+  @apply text-center font-semibold text-gray-300;
+}
+
+.loadMoreButton {
+  @apply block mx-auto mt-12;
+}

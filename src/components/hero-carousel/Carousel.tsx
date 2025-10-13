@@ -16,7 +16,7 @@ const carouselImages = [
   { src: '/hero-carousel/slide5.jpg', alt: 'Final project' },
 ];
 
-const TWEEN_FACTOR = 1.5;
+const TWEEN_FACTOR = 0.9;
 
 const Carousel3D = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'center' });
@@ -52,6 +52,7 @@ const Carousel3D = () => {
   }, [emblaApi, onScroll]);
 
   return (
+
     <div className={styles.embla}>
       <div className={styles.embla__viewport} ref={emblaRef}>
         <div className={styles.embla__container}>
@@ -67,7 +68,7 @@ const Carousel3D = () => {
                 style={{
                   // All animation is now controlled here
                   ...(tweenValues.length && {
-                    transform: `scale(${1 - Math.abs(tweenValues[index] / 100) * 1})`,
+                    transform: `scale(${1 - Math.abs(tweenValues[index] / 100) * 1.5})`,
                     filter: `brightness(${1 - Math.abs(tweenValues[index] / 100) * 2})`,
                   }),
                 }}

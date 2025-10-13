@@ -29,7 +29,7 @@ const Header = () => {
         <ul className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <li key={link.name}>
-              <a href={link.href} className="text-gray-300 hover:text-white transition-colors">
+              <a href={link.href} className="text-gray-100 hover:text-white transition-colors">
                 {link.name}
               </a>
             </li>
@@ -37,7 +37,7 @@ const Header = () => {
         </ul>
 
         {/* CTA Button */}
-      <ShineButton className="py-1 px-4 text-sm">
+      <ShineButton className="py-1 px-4 text-l font-medium">
         Let&apos;s Connect
       </ShineButton>
       </nav>

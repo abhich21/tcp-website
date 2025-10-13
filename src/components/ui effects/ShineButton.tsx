@@ -11,7 +11,7 @@ const ShineButton = ({ children, className, ...props }: ShineButtonProps) => {
   return (
     <button
       className={clsx(
-        'relative group overflow-hidden bg-green-800 text-white-300 rounded-full transition-colors duration-300',
+        '  relative group overflow-hidden text-white-300 rounded-full transition-colors duration-300  bg-green-600/95  ',
         className // This allows you to add more classes from the outside
       )}
       {...props} // Pass down any other button props like onClick
@@ -20,7 +20,7 @@ const ShineButton = ({ children, className, ...props }: ShineButtonProps) => {
       {children}
 
       {/* The Shine Element */}
-      <div className="absolute inset-0 w-full h-full transform -skew-x-30 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+      <div className=" absolute inset-0 w-full h-full transform -skew-x-30 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
     </button>
   );
 };

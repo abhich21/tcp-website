@@ -38,3 +38,23 @@ background-image: linear-gradient(
     background-position: -200% center;
   }
 }
+.carouselCard {
+  position: relative;
+  width: 100%;
+  max-width: 75vw;
+  /* Replaces the old mt-10 on the div */
+  margin-top: 2.5rem;
+  
+  /* Glassmorphism Styles */
+  padding: 2rem;
+  padding-bottom: 6rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(50px);
+}
+
+/* This is the one necessary override to move the dots */
+.carouselCard :global(.embla__dots) {
+  bottom: 1.5rem;
+}

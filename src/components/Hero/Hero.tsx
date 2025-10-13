@@ -26,10 +26,10 @@ const Hero = () => {
       </h1>
 
       {/* ... (rest of the component is the same) ... */}
-      <ShineButton className="py-2 px-6 text-sm">
+      <ShineButton className="py-2 px-6 text-xl font-bold">
         Let&apos;s Connect
       </ShineButton>
-      <div className="mt-10 mb-10 w-full">
+      <div className={styles.carouselCard}>
         <Carousel3D />
       </div>
     </section>

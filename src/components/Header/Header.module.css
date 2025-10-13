@@ -1,5 +1,5 @@
 @reference"tailwindcss";
 
 .navbar {
-  @apply flex items-center justify-between rounded-full bg-white/15 p-2 pl-6 pr-2 backdrop-blur-xs border border-white/20 mt-6;
+  @apply flex items-center justify-between rounded-full bg-white/15 p-2 pl-6 pr-2 backdrop-blur-xl border border-white/20 mt-6;
 }

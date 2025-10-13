@@ -7,16 +7,17 @@ body::before {
   width: 100vw;
   height: 100vh;
   
-  background-image: radial-gradient(circle at 50% 30%, rgba(255, 115, 0, 0.2), transparent 10%), url('/02.jpg');
- /* Add these two lines */
+  /* background-image: radial-gradient(circle at 50% 30%, rgba(255, 115, 0, 0.2), transparent 10%), url('/02.jpg'); */
+backdrop-filter: blur(20px);
   background-size: cover, cover; 
   background-repeat: no-repeat, no-repeat;
   
-  /* You may also want to center the image */
+  
   background-position: center, center;
   z-index: -1;
   opacity: 0.4;
 }
+
 
 /* Embla Carousel Styles */
 /* Final Embla Carousel Styles */

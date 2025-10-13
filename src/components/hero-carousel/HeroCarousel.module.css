@@ -1,6 +1,7 @@
 .embla {
   position: relative;
-  max-width: 80%;
+  /* the width of the vw of the carousel itself */
+  max-width: 100%; 
   margin-left: auto;
   margin-right: auto;
 }
@@ -8,11 +9,13 @@
 .embla__viewport {
   overflow: hidden;
   height: 15rem;
+  
 }
 
 .embla__container {
   display: flex;
   height: 100%;
+  
 }
 
 .embla__slide {
@@ -28,7 +31,7 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease, filter 0.5s ease;
+  transition: transform 0.15s ease, filter 0.5s ease;
   pointer-events: none;
   user-select: none;
 }
@@ -90,6 +93,6 @@
 
   .embla__dots {
     /* Move the dots closer to the carousel on smaller screens */
-    bottom: -3rem;
+    /* bottom: -3rem; */
   }
 }

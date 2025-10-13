@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat} from "next/font/google"; // 1. Import Montserrat
-
+import { Inter, Montserrat} from "next/font/google";
+import DarkVeil from '../components/bg/DarkVeil';
 import "./globals.css";
 import Header from "@/components/Header/Header";
 
-
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-// 2. Create the Montserrat font instance with a CSS variable
 const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-montserrat", // The name of our CSS variable
-  weight: ["400", "700"],       // You can specify which weights to load
+  variable: "--font-montserrat",
+  weight: ["400", "700"],
 });
-
 
 export const metadata: Metadata = {
   title: "CloudPlay XP | High Impact Design for Brands",
@@ -26,11 +23,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* 3. Apply the font variables to the body */}
       <body className={`${inter.variable} ${montserrat.variable} bg-[#0D0D0D] text-white`}>
-        <Header />
         
+        {/* 1. Background Component Container */}
+        <div className="fixed top-0 left-0 w-full h-screen -z-10 ">
+          <DarkVeil 
+            noiseIntensity={0.05} 
+            hueShift={220}
+          />
+        </div>
+
+        {/* 2. Your page content sits on top */}
+        <Header />
         {children}
+        
       </body>
     </html>
   );
