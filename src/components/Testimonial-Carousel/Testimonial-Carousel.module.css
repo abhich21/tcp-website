@@ -1,0 +1,60 @@
+/* src/components/TestimonialCarousel/TestimonialCarousel.module.css */
+@reference "tailwindcss";
+.container {
+  /* This is the main container holding the buttons and the carousel area */
+  @apply relative flex items-center justify-center py-10 px-4;
+}
+
+.carouselWrapper {
+  /* This is a placeholder that defines the size and position of the card */
+  @apply relative w-full md:w-4/5 lg:w-3/5 mx-auto;
+  min-height: 300px; /* Ensures the container has height */
+}
+
+.contentCard {
+  /* This class is passed to the GlassCard to make it fill the wrapper */
+  @apply w-full h-full p-8 lg:p-12 flex flex-col justify-between;
+}
+
+/* --- Content styles (no changes needed here) --- */
+.quote {
+  @apply text-xl lg:text-2xl text-gray-200 italic mb-8;
+  font-family: serif;
+}
+
+.authorContainer {
+  @apply flex items-center gap-4;
+}
+
+.authorImage {
+  @apply rounded-full object-cover;
+}
+
+.authorName {
+  @apply text-lg font-semibold text-white;
+}
+
+.authorDesignation {
+  @apply text-sm text-gray-400;
+}
+/* --- Navigation Buttons --- */
+/* --- CORRECTED Navigation Buttons --- */
+.navButton {
+  @apply absolute z-10 p-3 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm transition-colors duration-200;
+}
+
+.prevButton {
+  /* Position closer on all screens */
+  @apply left-2 md:left-4;
+}
+
+.nextButton {
+  /* Position closer on all screens */
+  @apply right-2 md:right-4;
+}
+
+.navIcon {
+  @apply h-6 w-6 text-gray-300;
+}
+
+/* The old mobile media query has been completely removed */

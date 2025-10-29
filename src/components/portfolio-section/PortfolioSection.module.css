@@ -1,7 +1,7 @@
-@reference"tailwindcss";
+@reference "tailwindcss";
 
 .section {
-  @apply w-full max-w-6xl mx-auto py-20 px-4;
+  @apply w-full max-w-6xl mx-auto py-20 px-4 font-[montserrat];
 }
 
 /* Main "Designed to Design" card */
@@ -10,12 +10,9 @@
   background-color: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(50px);
 }
-/* .cardTextContent{
-   @apply md:col-span-2;
-} */
 
 .cardTextContent h2 {
-  @apply text-8xl  text-gray-300 mb-4;
+  @apply text-8xl text-gray-300 mb-4;
 }
 
 .cardTextContent p {
@@ -23,12 +20,12 @@
 }
 
 .cardImageContainer {
-  @apply   overflow-hidden;
+  @apply overflow-hidden;
 }
 
 /* Projects Grid */
 .projectsTitle {
-  @apply text-center text-4xl font-bold mt-24 mb-12;
+  @apply text-center text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mt-24 mb-12;
 }
 
 .projectsGrid {
@@ -36,7 +33,7 @@
 }
 
 .projectCard {
-  @apply pb-4 rounded-2xl  transition-all duration-300;
+  @apply pb-4 rounded-2xl transition-all duration-300;
   background-color: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(50px);
 }
@@ -56,4 +53,35 @@
 
 .loadMoreButton {
   @apply block mx-auto mt-12;
+}
+
+/* === Responsive Styles for Mobile and Tablet === */
+@media (max-width: 1024px) {
+  /* Tablet styles */
+  .cardTextContent h2 {
+    @apply text-6xl; /* Decrease font size for tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile styles */
+  .section {
+    @apply py-12 px-4; /* Reduce vertical padding */
+  }
+
+  .glassCard {
+    @apply p-6; /* Reduce padding inside the main card */
+  }
+
+  .cardTextContent h2 {
+    @apply text-5xl; /* Further decrease font size for mobile */
+  }
+
+  .projectsTitle {
+    @apply text-3xl mt-16 mb-8; /* Adjust title size and spacing */
+  }
+
+  .projectImageContainer {
+    @apply h-64; /* Reduce the height of project image placeholders */
+  }
 }

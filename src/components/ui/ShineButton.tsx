@@ -11,7 +11,7 @@ const ShineButton = ({ children, className, ...props }: ShineButtonProps) => {
   return (
     <button
       className={clsx(
-        '  relative group overflow-hidden text-white-300 rounded-full transition-colors duration-300  bg-green-600/95  ',
+        '  relative group overflow-hidden text-white-300 rounded-full transition-colors duration-300 bg-green-800 ',
         className // This allows you to add more classes from the outside
       )}
       {...props} // Pass down any other button props like onClick

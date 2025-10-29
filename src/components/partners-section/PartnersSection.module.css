@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+.section {
+  @apply w-full pb-20 py-15;
+}
+
+.title {
+  @apply text-center text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-16;
+}
+
+.logoGlassCard {
+  @apply py-5;
+  mask-image:
+    linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+  -webkit-mask-composite: source-in;
+}
+
+/* === Responsive Styles for Mobile and Tablet === */
+@media (max-width: 1024px) {
+  /* Tablet styles */
+  .title {
+    @apply text-3xl mb-12; /* Slightly smaller title and less margin */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile styles */
+  .section {
+    @apply py-12; /* Reduce vertical padding on mobile */
+  }
+  .title {
+    @apply text-2xl mb-10; /* Smaller title and margin for mobile */
+  }
+}

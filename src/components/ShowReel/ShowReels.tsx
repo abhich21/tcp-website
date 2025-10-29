@@ -3,7 +3,7 @@
 import React from 'react';
 import styles from './ShowReel.module.css';
 // 1. Import the reusable GlassCard component
-import GlassCard from '../ui effects/GlassCard/GlassCard';
+import GlassCard from '../ui/GlassCard/GlassCard';
 
 const ShowReel: React.FC = () => {
   return (

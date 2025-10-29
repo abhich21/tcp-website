@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image'; // 1. Import the Image component
-import ShineButton from '../ui effects/ShineButton';
+import ShineButton from '../ui/ShineButton';
+
+  
 import styles from './Header.module.css'; // 1. Import the CSS Module
 
 const navLinks = [

@@ -2,11 +2,11 @@
 @reference"tailwindcss";
 .title {
   position: relative;
-  @apply text-3xl md:text-6xl font-bold max-w-4xl leading-tight tracking-tight mb-8;
+  @apply text-3xl md:text-6xl font-bold max-w-4xl leading-none tracking-tight mb-4;
 }
 
 .animatedText {
-    @apply font-[montserrat] leading-tight tracking-tight;
+    @apply font-[montserrat] leading-tight tracking-wide;
    
   position: absolute;
   top: 0;
@@ -24,10 +24,10 @@ background-image: linear-gradient(
   background-clip: text;
   color: transparent;
 
-  /* --- ADD THIS LINE --- */
+  
   background-size: 200% 100%;
 
-  animation: light-trace 3s linear infinite;
+  animation: light-trace 5s linear infinite;
 }
 
 @keyframes light-trace {
@@ -43,11 +43,11 @@ background-image: linear-gradient(
   width: 100%;
   max-width: 75vw;
   /* Replaces the old mt-10 on the div */
-  margin-top: 2.5rem;
+  margin-top: 1rem;
   
   /* Glassmorphism Styles */
   padding: 2rem;
-  padding-bottom: 6rem;
+  padding-bottom: 5rem;
   border-radius: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background-color: rgba(255, 255, 255, 0.05);
@@ -56,5 +56,5 @@ background-image: linear-gradient(
 
 /* This is the one necessary override to move the dots */
 .carouselCard :global(.embla__dots) {
-  bottom: 1.5rem;
+  bottom: 1rem;
 }

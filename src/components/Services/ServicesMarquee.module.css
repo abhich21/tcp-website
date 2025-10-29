@@ -1,0 +1,52 @@
+@reference "tailwindcss";
+
+.marqueeContainer {
+  @apply w-full flex flex-col gap-4 overflow-hidden font-[montserrat];
+  -webkit-mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+}
+
+.track {
+  @apply flex flex-nowrap whitespace-nowrap;
+}
+
+.marqueeText {
+  @apply text-4xl font-semibold text-gray-400/50 mx-4 font-[montserrat];
+}
+
+.marqueeGlassCard {
+  @apply mb-20 py-5;
+  mask-image:
+    /* Left-to-right fade */
+    linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+
+  /* This tells the browser how to combine the masks */
+  mask-composite: intersect;
+
+  /* Don't forget the -webkit- prefixes for compatibility! */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+  -webkit-mask-composite: source-in;
+}
+
+/* === Responsive Styles for Mobile and Tablet === */
+@media (max-width: 1024px) {
+  /* Tablet styles */
+  .marqueeText {
+    @apply text-3xl; /* Slightly smaller text for tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile styles */
+  .marqueeText {
+    @apply text-2xl; /* Smaller text for mobile phones */
+  }
+
+  .marqueeContainer,
+  .marqueeGlassCard {
+    /* Adjust the fade to give more visible text area on narrow screens */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  }
+}

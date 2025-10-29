@@ -25,48 +25,80 @@ interface ScrollStackProps {
 // Main ScrollStack component, simplified for window scroll
 const ScrollStack: React.FC<ScrollStackProps> = ({
   children,
-  itemDistance = -250, // Default to a stacking value
+  itemDistance = 1, // Default to a stacking value
   itemScale = 0.05,
   itemStackDistance = 15,
-  stackPosition = '30%',
+  stackPosition = '100%',
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLElement[]>([]);
+  const animationStartPointRef = useRef<number | null>(null); // <-- ADD THIS
   const lenisRef = useRef<Lenis | null>(null);
    // --- THIS IS THE FIX ---
   // Get a stable count of the children
   const numChildren = React.Children.count(children);
+  
 
-  const updateCardTransforms = useCallback(() => {
+  // ScrollStack.tsx
+
+// REPLACE the old updateCardTransforms with this new one
+// ScrollStack.tsx
+
+// REPLACE the entire old updateCardTransforms function with this one
+// ScrollStack.tsx
+
+const updateCardTransforms = useCallback(() => {
     const scrollTop = window.scrollY;
-    const containerHeight = window.innerHeight;
-    const stackPositionPx = (parseFloat(stackPosition) / 100) * containerHeight;
+    const startPoint = animationStartPointRef.current;
+
+    // --- THIS IS THE FIX ---
+    // First, check if we've scrolled far enough to start the animation.
+    if (startPoint === null || scrollTop < startPoint) {
+        // If not, ensure all cards are in their default, non-transformed state.
+        // This allows them to scroll normally with the page.
+        cardsRef.current.forEach((card) => {
+            card.style.transform = 'translateY(0px) scale(1)';
+        });
+        return; // Stop the function here.
+    }
+
+    // --- Animation is Active ---
+    // This code only runs AFTER you've scrolled past the startPoint.
+
+    const endElement = document.querySelector('.scroll-stack-end') as HTMLElement;
+    if (!endElement) return;
+
+    const cardHeight = cardsRef.current[0]?.offsetHeight || 0;
+    const stickyPositionPx = window.innerHeight / 2 - cardHeight / 2;
+    const endElementTop = endElement.offsetTop;
+    const pinEnd = endElementTop - stickyPositionPx;
+
+    const scrollProgress = scrollTop - startPoint;
 
     cardsRef.current.forEach((card, i) => {
-      const rect = card.getBoundingClientRect();
-      const cardTop = rect.top + scrollTop;
-      
-      // Pinning logic starts here
-      const pinStart = cardTop - stackPositionPx;
-      const totalPinDuration = (cardsRef.current.length - 1 - i) * Math.abs(itemDistance);
-      const pinEnd = pinStart + totalPinDuration;
+        const cardTop = card.offsetTop;
 
-      let translateY = 0;
-      if (scrollTop >= pinStart && scrollTop <= pinEnd) {
-        translateY = scrollTop - pinStart;
-      } else if (scrollTop > pinEnd) {
-        translateY = totalPinDuration;
-      }
+        let translateY = 0;
+        const isPinned = scrollTop < pinEnd;
 
-      // Scaling logic
-      const scaleStart = cardTop - containerHeight;
-      const scaleEnd = cardTop - stackPositionPx;
-      const scaleProgress = Math.max(0, Math.min(1, (scrollTop - scaleStart) / (scaleEnd - scaleStart)));
-      const scale = 1 - (1 - (1 - itemScale * (cardsRef.current.length - 1 - i))) * scaleProgress;
+        if (isPinned) {
+            // Manually calculate translateY to counteract the scroll, pinning the card.
+            translateY = scrollTop - cardTop + stickyPositionPx;
+        } else {
+            // Once past the end, lock the card at its final translated position.
+            translateY = pinEnd - cardTop + stickyPositionPx;
+        }
 
-      card.style.transform = `translateY(-${translateY}px) scale(${scale})`;
+        const totalPinDuration = pinEnd - startPoint;
+        const scaleProgress = Math.min(1, scrollProgress / (totalPinDuration || 1));
+        const targetScale = 1 - (cardsRef.current.length - 1 - i) * itemScale;
+        const scale = 1 - (1 - targetScale) * scaleProgress;
+
+        const itemStackDistance = 15; // Visual depth for the stack
+        card.style.transform = `translateY(${translateY - i * itemStackDistance}px) scale(${scale})`;
+        card.style.zIndex = `${cardsRef.current.length - i}`;
     });
-  }, [itemDistance, itemScale, stackPosition]);
+}, [ itemScale]);
 
   useLayoutEffect(() => {
     if (typeof window === 'undefined') return;
@@ -76,18 +108,38 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
     // Set up cards
     cardsRef.current = Array.from(container.querySelectorAll('.scroll-stack-card'));
-    cardsRef.current.forEach((card, i) => {
-        const topPosition = (parseFloat(stackPosition) / 100) * 100;
-      // This is the offset that creates the visible stack
-      const topOffset = i * 15; // 10px offset for each card
-      card.style.transformOrigin = 'center center';
-      card.style.position = 'sticky';
-       // We add the calculated offset to the top position
-      card.style.top = `calc(${topPosition}vh + ${topOffset}px)`;
-       // --- THIS IS THE FIX ---
-      // Changed from (length - i) to just (i)
-      card.style.zIndex = `${i}`;
-    });
+    // ---- ADD THIS BLOCK ----
+if (cardsRef.current.length > 0 && animationStartPointRef.current === null) {
+  const firstCard = cardsRef.current[0];
+  const firstCardRect = firstCard.getBoundingClientRect();
+  const scrollTop = window.scrollY;
+
+  // This calculates the exact scrollY value where the card's center will be at the viewport's center
+  const startPoint = (firstCardRect.top + scrollTop) + (firstCardRect.height / 2) - (window.innerHeight / 2);
+  animationStartPointRef.current = startPoint;
+}
+// // --- ADD THIS BLOCK to calculate the centered top position ---
+let centeredTopInPixels = 0;
+if (cardsRef.current.length > 0) {
+    const cardHeight = cardsRef.current[0].offsetHeight;
+    const viewportHeight = window.innerHeight;
+    centeredTopInPixels = (viewportHeight / 2) - (cardHeight / 2);
+}
+// --- END OF NEW BLOCK ---
+
+
+// --- THEN REPLACE the old forEach loop with this one ---
+cardsRef.current.forEach((card, i) => {
+    // This is the offset that creates the visible stack
+    const topOffset = i * 15;
+    card.style.transformOrigin = 'center center';
+    card.style.position = 'sticky';
+
+    // We use our new PIXEL-based calculation plus the offset
+    card.style.top = `${centeredTopInPixels + topOffset}px`;
+
+    card.style.zIndex = `${i}`;
+});
 
     // Set up Lenis for smooth scrolling
     const lenis = new Lenis();
@@ -111,11 +163,13 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     };
   }, [updateCardTransforms, stackPosition, numChildren]);
 
-  return (
-     <div ref={containerRef} style={{ height: `${numChildren * Math.abs(itemDistance)}px`}}>
-      {children}
+ return (
+    // The container no longer needs a calculated height.
+    // Its height will come from the content inside it.
+    <div ref={containerRef}>
+        {children}
     </div>
-  );
+);
 };
 
 export default ScrollStack;

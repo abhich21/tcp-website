@@ -4,8 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 // import { EmblaCarouselType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
-import { DotButton, useDotButton } from '../ui effects/EmblaCarouselDotButton';
-import styles from './HeroCarousel.module.css'; // 1. Import the CSS Module
+import { DotButton, useDotButton } from '../../ui/EmblaCarouselDotButton';
+import styles from './Hero-Carousel.module.css'; // 1. Import the CSS Module
 import clsx from 'clsx'; // We'll use clsx to combine classes
 
 const carouselImages = [

@@ -1,0 +1,34 @@
+/* src/components/MeetTheTeam/MeetTheTeam.module.css */
+@reference "tailwindcss";
+/* src/components/MeetTheTeam/MeetTheTeam.module.css */
+
+.section {
+  @apply w-full max-w-6xl mx-auto py-20 px-4;
+}
+
+.title {
+  @apply text-center text-4xl font-bold font-[montserrat] mb-16;
+}
+
+.teamGrid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-stretch;
+}
+
+/* Styles applied to the GlassCard */
+.teamMemberCard {
+  /* Override default padding, ensure flex column */
+  @apply p-4 flex flex-col rounded-2xl;
+}
+
+/* Container for Name and Title below the TiltedCard */
+.memberInfo {
+  @apply text-center mt-4; /* Add space above the text */
+}
+
+.memberName {
+  @apply text-xl font-semibold text-white mb-1;
+}
+
+.memberTitle {
+  @apply text-lime-400 text-sm;
+}
