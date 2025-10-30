@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat} from "next/font/google";
-// REMOVED: import DarkVeil from '../components/bg/DarkVeil';
+import DarkVeil from '../components/bg/DarkVeil';
 import "./globals.css";
 import Header from "@/components/Header/Header";
 
