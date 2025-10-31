@@ -1,25 +1,46 @@
-/* src/components/TestimonialCarousel/TestimonialCarousel.module.css */
+/* src/components/TestimonialCarousel/Testimonial-Carousel.module.css */
 @reference "tailwindcss";
+
 .container {
-  /* This is the main container holding the buttons and the carousel area */
-  @apply relative flex items-center justify-center py-10 px-4;
+  /* This is the main positioning context.
+     The px-4 (1rem) padding is CRUCIAL. It gives the buttons
+     a safe space to live on mobile.
+  */
+  @apply relative flex items-center justify-center py-12 md:py-20 px-4;
 }
 
 .carouselWrapper {
-  /* This is a placeholder that defines the size and position of the card */
-  @apply relative w-full md:w-4/5 lg:w-3/5 mx-auto;
-  min-height: 300px; /* Ensures the container has height */
+  /* This is the card area.
+     Mobile: 90% width (so it doesn't touch the buttons)
+     Tablet: 80% width
+     Desktop: 66.6% width
+  */
+  @apply relative w-[90%] md:w-4/5 lg:w-2/3 mx-auto;
+  
+  /* Give it a consistent min-height to prevent layout jumps */
+  min-height: 350px;
 }
 
 .contentCard {
-  /* This class is passed to the GlassCard to make it fill the wrapper */
-  @apply w-full h-full p-8 lg:p-12 flex flex-col justify-between;
+  /* Mobile-first padding:
+     - p-6 (24px) on mobile
+     - p-8 (32px) on tablet
+     - p-12 (48px) on desktop
+  */
+  @apply w-full h-full p-6 md:p-8 lg:p-12 flex flex-col justify-center;
+  min-height: 350px; /* Match the wrapper's min-height */
 }
 
-/* --- Content styles (no changes needed here) --- */
 .quote {
-  @apply text-xl lg:text-2xl text-gray-200 italic mb-8;
-  font-family: serif;
+  /* Fluid font size. Min 18px, Max 24px. */
+  font-size: clamp(1.125rem, 1.125rem + 0.5vw, 1.5rem);
+  
+  @apply text-gray-200 italic mb-6 md:mb-8 font-[montserrat] shrink;
+  
+  /* Critical fixes for long content */
+  overflow-y: auto; 
+  overflow-wrap: break-word;
+  max-height: 200px; /* Prevents long quotes from breaking the card */
 }
 
 .authorContainer {
@@ -32,29 +53,34 @@
 
 .authorName {
   @apply text-lg font-semibold text-white;
+  overflow-wrap: break-word; /* Fix for long names */
 }
 
 .authorDesignation {
   @apply text-sm text-gray-400;
+  overflow-wrap: break-word; /* Fix for long designations */
 }
-/* --- Navigation Buttons --- */
-/* --- CORRECTED Navigation Buttons --- */
+
+/* --- NAVIGATION BUTTONS (The Simple Fix) --- */
+
 .navButton {
+  /* Standard setup: absolute, vertically centered */
   @apply absolute z-10 p-3 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm transition-colors duration-200;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .prevButton {
-  /* Position closer on all screens */
-  @apply left-2 md:left-4;
+  /* Positioned simply from the left edge of the .container */
+  @apply left-1 md:left-4 lg:left-8;
 }
 
 .nextButton {
-  /* Position closer on all screens */
-  @apply right-2 md:right-4;
+  /* Positioned simply from the right edge of the .container */
+  @apply right-1 md:right-4 lg:right-8;
 }
 
 .navIcon {
-  @apply h-6 w-6 text-gray-300;
+  /* Mobile-first icon size */
+  @apply h-5 w-5 md:h-6 md:w-6 text-gray-300;
 }
-
-/* The old mobile media query has been completely removed */

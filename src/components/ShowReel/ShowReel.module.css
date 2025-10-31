@@ -1,45 +1,41 @@
-@reference"tailwindcss";
+@reference "tailwindcss";
 
 .section {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem 1rem;
-  /* padding-bottom: 1rem !important; */
-  padding-top: 1rem !important;
 }
 
 .title {
-  @apply text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 ;
-  margin-bottom: 1rem !important ;
-  margin-top: 3rem !important ;
+  @apply font-semibold font-[montserrat] tracking-widest text-gray-300;
 }
 
 .card {
-  @apply relative w-full max-w-4xl   overflow-hidden p-8 rounded-3xl;
+  /* KEY FIX: REMOVED 'overflow-hidden' from here.
+  */
+  @apply relative rounded-3xl;
   box-shadow: 0 0 40px rgba(100, 100, 255, 0.1);
   height: auto;
- 
 }
 
-.video {
-  @apply w-full h-full object-cover;
-}
-
-/* New style for the mute button */
-.muteButton {
-  @apply absolute bottom-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white backdrop-blur-sm transition-opacity hover:opacity-80;
-}
-.reactPlayer {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
 .videoContainer {
-  @apply relative w-full cursor-pointer;
-  /* Add padding-top to maintain a 16:9 aspect ratio */
-  padding-top: 56.25%; 
-  overflow: hidden !important;
-  
+  /* This creates the 16:9 aspect ratio box */
+  @apply relative w-full;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+
+  /* KEY FIX: MOVED 'overflow-hidden' HERE.
+    We also add rounded corners to clip the video itself, 
+    matching the card.
+  */
+  @apply overflow-hidden rounded-2xl; 
+  /* (Use rounded-2xl so it looks good inside the card's padding) */
+}
+
+.reactPlayer {
+  /* KEY FIX: We move all sizing and border styles here
+    from the .tsx file's inline style.
+  */
+  @apply absolute top-0 left-0 w-full h-full;
+  border: none;
 }

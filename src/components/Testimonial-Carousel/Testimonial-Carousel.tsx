@@ -97,7 +97,7 @@ export const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testim
                     className={styles.authorImage}
                   />
                 </div>
-                <div>
+                <div className="min-w-0 md:min-w-auto">
                   <p className={styles.authorName}>{testimonials[currentIndex].name}</p>
                   <p className={styles.authorDesignation}>{testimonials[currentIndex].designation}</p>
                 </div>

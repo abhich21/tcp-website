@@ -53,6 +53,7 @@
 
 .loadMoreButton {
   @apply block mx-auto mt-12;
+  max-width: 20%;
 }
 
 /* === Responsive Styles for Mobile and Tablet === */
@@ -84,4 +85,10 @@
   .projectImageContainer {
     @apply h-64; /* Reduce the height of project image placeholders */
   }
+  .loadMoreButton {
+  
+  max-width: 50%;
+}
+
+  
 }

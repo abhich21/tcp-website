@@ -47,7 +47,13 @@ const PortfolioSection = () => {
             </div>
           ))}
         </div>
-        <ShineButton className={`${styles.loadMoreButton} py-2 px-6`}>
+        {/* Turn the button into a link to your new portfolio page */}
+        <ShineButton
+          href="/portfolio"           // 1. Add the link
+          target="_blank"             // 2. Add target to open in a new tab
+          rel="noopener noreferrer"     // 3. Security for new tabs
+          className={`${styles.loadMoreButton} py-2 px-6`}
+        >
           Load More
         </ShineButton>
       </div>

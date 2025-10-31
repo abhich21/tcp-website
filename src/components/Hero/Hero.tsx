@@ -5,8 +5,8 @@ import styles from './Hero.module.css';
 
 const Hero = () => {
   return (
-    <section className="flex flex-col items-center justify-center text-center py-5 px-4 font-[montserrat] leading-tight tracking-tight">
-      <h1 className={styles.title}>
+    <section className="flex flex-col items-center justify-center text-center py-5 px-4 md:py-10 lg:py-16 font-[montserrat] leading-tight tracking-tight">
+      <h1 className={`${styles.title} text-3xl md:text-3xl lg:text-6xl`}>
         {/* Animated Layer (Top) */}
         <span className={styles.animatedText}>
           HIGH IMPACT <br />
@@ -26,9 +26,14 @@ const Hero = () => {
       </h1>
 
       {/* ... (rest of the component is the same) ... */}
-      <ShineButton className="py-2 px-6 text-xl font-bold mb-1">
-        Let&apos;s Connect
-      </ShineButton>
+      <ShineButton 
+  className="
+    py-1 px-3 text-sm font-bold mb-1 
+    md:py-2 md:px-4 md:text-lg 
+    lg:py-2 lg:px-6 lg:text-xl"
+>
+  Let&apos;s Connect
+</ShineButton>
       <div className={styles.carouselCard}>
         <Carousel3D />
       </div>

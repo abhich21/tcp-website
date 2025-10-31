@@ -39,11 +39,11 @@ export default function Home() {
        <ServicesMarquee /> {/* Ensure this matches */}
        {/* 2. Add the new Testimonials Section */}
       <section className="w-full h-auto py-10 px-4">
-        <h2 className="text-center text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-16">
+        <h2 className="text-center text-2xl md:text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-16">
           Client <span className="text-lime-400">Testimonials</span>
         </h2>
         
-        <GlassCard className="w-4/5 mx-auto rounded-3xl">
+        <GlassCard className="w-11/12 md:w-4/5 mx-auto rounded-3xl">
           {/* We add a negative margin to counteract the component's internal padding */}
           <div className="">
             <TestimonialCarousel testimonials={testimonials} />

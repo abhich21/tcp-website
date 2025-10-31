@@ -1,6 +1,5 @@
 /* src/components/MeetTheTeam/MeetTheTeam.module.css */
 @reference "tailwindcss";
-/* src/components/MeetTheTeam/MeetTheTeam.module.css */
 
 .section {
   @apply w-full max-w-6xl mx-auto py-20 px-4;
@@ -11,18 +10,19 @@
 }
 
 .teamGrid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 items-stretch;
+  /* Default is mobile (now 2 columns), Tailwind handles the rest via prefixes */
+  @apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 items-stretch;
+  /* Start with 2 columns, adjust gap */
 }
 
 /* Styles applied to the GlassCard */
 .teamMemberCard {
-  /* Override default padding, ensure flex column */
   @apply p-4 flex flex-col rounded-2xl;
 }
 
 /* Container for Name and Title below the TiltedCard */
 .memberInfo {
-  @apply text-center mt-4; /* Add space above the text */
+  @apply text-center mt-4;
 }
 
 .memberName {
@@ -31,4 +31,46 @@
 
 .memberTitle {
   @apply text-lime-400 text-sm;
+}
+
+/* === Responsive Styles === */
+
+/* Tablet Styles (Screens up to 1024px) */
+@media (max-width: 1024px) {
+  .section {
+    @apply py-16;
+  }
+  .title {
+    @apply text-3xl mb-12;
+  }
+  .teamGrid {
+     /* Ensures it STAYS 2 columns on tablet, but lg: takes over later */
+    @apply grid-cols-2 gap-6;
+  }
+  .memberName {
+    @apply text-lg;
+  }
+}
+
+/* Mobile Styles (Screens up to 768px) */
+@media (max-width: 768px) {
+  .section {
+    @apply py-12 px-2;
+  }
+  .title {
+    @apply text-2xl mb-10;
+  }
+  .teamGrid {
+    /* Set grid columns and gap */
+    @apply grid grid-cols-2 gap-4; 
+    /* --- ADD THIS --- */
+    /* Set the height of automatically generated rows */
+    @apply auto-rows-[15rem]; 
+  }
+  .memberName {
+    @apply text-base;
+  }
+  .memberTitle {
+    @apply text-xs;
+  }
 }

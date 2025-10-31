@@ -1,31 +1,28 @@
+/* === BASE (MOBILE) STYLES === */
 .embla {
   position: relative;
-  /* the width of the vw of the carousel itself */
-  max-width: 100%; 
+  max-width: 95%; /* Mobile-first: 95% width */
   margin-left: auto;
   margin-right: auto;
 }
 
 .embla__viewport {
   overflow: hidden;
-  height: 15rem;
-  
+  height: 15rem; /* This is 240px. We can make this responsive next! */
 }
 
 .embla__container {
   display: flex;
   height: 100%;
-  
 }
 
 .embla__slide {
   position: relative;
-  flex: 0 0 33.33%;
+  flex: 0 0 90%; /* Mobile-first: Show one slide (90%) */
   min-width: 0;
-  padding: 0 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 
-/* 1. Base styles for the image itself */
 .embla__slide__img {
   border-radius: 1rem;
   height: 100%;
@@ -36,12 +33,11 @@
   user-select: none;
 }
 
-/* 2. The overlay class has been completely removed */
-
 /* --- Dots Styling --- */
 .embla__dots {
   position: absolute;
-  bottom: -4rem;
+  /* REMOVED 'bottom: -4rem;' to prevent conflict with Hero.module.css */
+  /* The parent (Hero.module.css) now controls the 'bottom' position */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -78,21 +74,14 @@
 .embla__dot--selected:after {
   box-shadow: inset 0 0 0 0.4rem #FFF;
 }
-/* === Media Query for Mobile Devices === */
-@media (max-width: 768px) {
+
+/* === TABLET & DESKTOP STYLES (md: 768px and up) === */
+@media (min-width: 768px) {
   .embla {
-    /* Make the carousel take up more of the screen width on mobile */
-    max-width: 95%;
+    max-width: 100%; /* Use 100% of the parent card's width */
   }
 
   .embla__slide {
-    /* Make each slide take up 90% of the viewport to focus on one at a time */
-    flex: 0 0 90%;
-    padding: 0 0.5rem;
-  }
-
-  .embla__dots {
-    /* Move the dots closer to the carousel on smaller screens */
-    /* bottom: -3rem; */
+    flex: 0 0 33.33%; /* Show 3 slides */
   }
 }
