@@ -35,18 +35,23 @@ interface PortfolioItem {
 
 // Define available categories
 const CATEGORIES = [
-  'All', 
-  'Event Design', 
-  '3D, Anamorphic, CGI & VFX', 
-  'Animation', 
-  'Event Content', 
-  'Games', 
-  'Home Look', 
-  'Presentation Design', 
-  'About Us', 
-  'Brochure', 
-  'Team Building & Simulations'
+  { id: 0, name: 'All' },
+  { id: 1, name: 'Event Design' },
+  { id: 2, name: '3D, Anamorphic, CGI & VFX' },
+  { id: 4, name: 'Animation' },
+  { id: 5, name: 'Event Content' }, 
+  { id: 6, name:'Games'}, 
+  { id: 7, name:'Home Look'}, 
+  { id: 8, name:'Presentation Design'}, 
+  { id: 9, name:'About Us'}, 
+  { id: 10, name:'Brochure'}, 
+  { id: 11, name:'Team Building & Simulations'}
 ];
+
+// Helper function to get category name by ID (Needed for local storage logic)
+const getCategoryNameById = (id: number): string | undefined => {
+    return CATEGORIES.find(c => c.id === id)?.name;
+};
 
 // Mock data based on the screenshot (using placeholder images and dates)
 const MOCK_PORTFOLIO_DATA: PortfolioItem[] = [
@@ -84,7 +89,7 @@ const PortfolioItemCard: React.FC<{ item: PortfolioItem }> = React.memo(({ item 
     <a 
       href={`/portfolio/${item.id}`} 
       // Main container now handles the scale and shadow effects
-      className="group block w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(0,168,89,0.8)]"
+      className="backdrop-blur-md bg-white/5 group block w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(0,168,89,0.8)]"
     >
       
       {/* 1. Image Area: Fixed height to prevent layout collapse from short images (like 20% height) */}
@@ -104,7 +109,7 @@ const PortfolioItemCard: React.FC<{ item: PortfolioItem }> = React.memo(({ item 
       </div>
 
       {/* 2. Text Area: Consistent height and styling below the image */}
-      <div className="bg-gray-800 p-4 min-h-[90px] flex flex-col justify-center">
+      <div className="p-4 min-h-[90px] flex flex-col justify-center">
         <p className="text-xs text-gray-300 mb-1 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
           {item.category}
         </p>
@@ -151,7 +156,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-around gap-4 mb-6">
         
         {/* Search Input */}
-        <div className="flex w-full sm:w-2/3 lg:w-1/3 border border-gray-700 rounded-lg overflow-hidden shadow-xl">
+        <div className="flex w-full sm:w-2/3 lg:w-2/3 border border-gray-700 rounded-lg overflow-hidden shadow-xl">
           <input
             type="text"
             // Placeholder text
@@ -163,7 +168,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </div>
 
         {/* Sort Dropdown */}
-        <div className="relative w-full sm:w-1/3 lg:w-40 group">
+        <div className="relative w-full sm:w-1/3 lg:w-1/3 group">
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -192,19 +197,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <div className="flex flex-wrap justify-center gap-2 md:gap-3">
           {CATEGORIES.map((category) => (
             <button
-              key={category}
+              key={category.id} // Use category.id as the key
               onClick={() => {
-                setActiveCategory(category);
+                setActiveCategory(category.name); // Use category.name for setting the active category
               }}
               className={`
                 px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
-                ${activeCategory === category
+                ${activeCategory === category.name // Compare with category.name
                   ? 'bg-[#00A859] text-white shadow-lg shadow-[#00A859]/50 transform scale-105' // Active color
-                  : 'bg-gray-800 text-gray-300 hover:bg-[#00A859] hover:text-white hover:shadow-md hover:scale-105 border border-gray-700' 
+                  : 'text-gray-300 hover:bg-[#00A859] hover:text-white hover:shadow-md hover:scale-105 border border-gray-700' 
                 }
               `}
             >
-              {category}
+              {category.name} {/* Display category.name */}
             </button>
           ))}
         </div>
@@ -308,6 +313,33 @@ export default function PortfolioPage() {
       }, 500);
     }
   }, [visibleCount, filteredAndSortedItems.length]);
+
+  /**
+   * CRITICAL LOGIC: useEffect to check localStorage on mount for the category ID.
+   * This retrieves the filter state when the user returns to this page.
+   */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+        const storedId = localStorage.getItem('portfolio_last_category_id');
+        if (storedId) {
+            const categoryId = parseInt(storedId, 10);
+            // Use the new helper function
+            const categoryName = getCategoryNameById(categoryId); 
+            
+            // Set the state if a category name was found and it's not the default 'All'
+            if (categoryName && categoryName !== 'All') {
+                setActiveCategory(categoryName); 
+                console.log(`[Persistence] Restored category filter to: ${categoryName} (ID: ${categoryId})`);
+            }
+            localStorage.removeItem('portfolio_last_category_id');
+        }
+    } catch (e) {
+        console.error("[Persistence] Could not read/clear localStorage for category ID:", e);
+    }
+    // Empty dependency array ensures this runs only once on mount
+  }, []); 
 
 
   // Get the subset of items to display
