@@ -3,6 +3,10 @@
 @plugin "tailwindcss-animate";
 @import "tw-animate-css";
 
+html {
+  scroll-behavior: smooth;
+}
+
 @custom-variant dark (&:is(.dark *));
 body::before {
   content: '';

@@ -6,7 +6,7 @@
      The px-4 (1rem) padding is CRUCIAL. It gives the buttons
      a safe space to live on mobile.
   */
-  @apply relative flex items-center justify-center py-12 md:py-20 px-4;
+  @apply relative flex items-center justify-center py-10 md:py-10 px-4;
 }
 
 .carouselWrapper {
@@ -27,13 +27,14 @@
      - p-8 (32px) on tablet
      - p-12 (48px) on desktop
   */
-  @apply w-full h-full p-6 md:p-8 lg:p-12 flex flex-col justify-center;
+  @apply w-full h-full p-4 md:p-8 lg:p-12 flex flex-col justify-center;
   min-height: 350px; /* Match the wrapper's min-height */
+  
 }
 
 .quote {
   /* Fluid font size. Min 18px, Max 24px. */
-  font-size: clamp(1.125rem, 1.125rem + 0.5vw, 1.5rem);
+  font-size: clamp(0.8rem, 0.8rem + 0.5vw, 1.5rem);
   
   @apply text-gray-200 italic mb-6 md:mb-8 font-[montserrat] shrink;
   
@@ -65,19 +66,19 @@
 
 .navButton {
   /* Standard setup: absolute, vertically centered */
-  @apply absolute z-10 p-3 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm transition-colors duration-200;
+  @apply absolute z-10 p-1 md:p-3 lg:p-3 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm transition-colors duration-200;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .prevButton {
   /* Positioned simply from the left edge of the .container */
-  @apply left-1 md:left-4 lg:left-8;
+  @apply left-[-2] md:left-4 lg:left-8;
 }
 
 .nextButton {
   /* Positioned simply from the right edge of the .container */
-  @apply right-1 md:right-4 lg:right-8;
+  @apply right-[-2] md:right-4 lg:right-8;
 }
 
 .navIcon {

@@ -15,7 +15,7 @@
 }
 
 .marqueeGlassCard {
-  @apply mb-20 py-5;
+  @apply  py-5;
   mask-image:
     /* Left-to-right fade */
     linear-gradient(to right, transparent, black 30%, black 70%, transparent);

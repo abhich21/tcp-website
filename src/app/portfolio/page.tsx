@@ -1,8 +1,14 @@
 "use client";
 
 import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-// 1. FIX: Temporarily replace the external import with a local mock component
+// 1. Import Next.js Link
+import Link from 'next/link';
+
+// 2. FIX: Temporarily replace the external import with a local mock component
 // import AnimatedText from "@/components/AnimatedText/AnimatedText"; 
+
+// 3. Import GlassCard
+import GlassCard from '@/components/ui/GlassCard/GlassCard';
 
 
 // --- 0. LOCAL COMPONENT DEFINITION (Replacement for missing AnimatedText) ------------------
@@ -82,42 +88,44 @@ const DEBOUNCE_DELAY_MS = 1000; // 1 second delay
 
 /**
  * Component for a single portfolio item card.
- * UPDATED: Uses separate fixed-height divs for image and text to ensure layout consistency.
+ * UPDATED: Uses Next.js <Link> and wraps content in <GlassCard>.
  */
 const PortfolioItemCard: React.FC<{ item: PortfolioItem }> = React.memo(({ item }) => {
   return (
-    <a 
+    <Link 
       href={`/portfolio/${item.id}`} 
-      // Main container now handles the scale and shadow effects
-      className="backdrop-blur-md bg-white/5 group block w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(0,168,89,0.8)]"
+      // Main <Link> tag controls layout, hover effects, and rounded shape
+      className="group block w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(0,168,89,0.8)]"
     >
-      
-      {/* 1. Image Area: Fixed height to prevent layout collapse from short images (like 20% height) */}
-      <div className="relative w-full h-48 sm:h-56 overflow-hidden bg-gray-900">
-        <img
-          src={item.imageUrl}
-          alt={item.title}
-          // The image fills the area and crops itself (object-cover)
-          className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-80"
-          loading="lazy"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.onerror = null;
-            target.src = 'https://placehold.co/600x224/1e293b/cbd5e1?text=Project+Image'; // Using 600x224 for 56h
-          }}
-        />
-      </div>
+      {/* GlassCard now provides the glass background and border */}
+      <GlassCard className="w-full h-full">
+        {/* 1. Image Area: Fixed height to prevent layout collapse */}
+        <div className="relative w-full h-48 sm:h-56 overflow-hidden bg-gray-900">
+          <img
+            src={item.imageUrl}
+            alt={item.title}
+            // The image fills the area and crops itself (object-cover)
+            className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-80"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.onerror = null;
+              target.src = 'https://placehold.co/600x224/1e293b/cbd5e1?text=Project+Image'; // Using 600x224 for 56h
+            }}
+          />
+        </div>
 
-      {/* 2. Text Area: Consistent height and styling below the image */}
-      <div className="p-4 min-h-[90px] flex flex-col justify-center">
-        <p className="text-xs text-gray-300 mb-1 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-          {item.category}
-        </p>
-        <h3 className="text-white text-lg font-semibold transition-colors duration-300 group-hover:text-[#00A859]">
-          {item.title}
-        </h3>
-      </div>
-    </a>
+        {/* 2. Text Area: Consistent height and styling below the image */}
+        <div className="p-4 min-h-[90px] flex flex-col justify-center">
+          <p className="text-xs text-gray-300 mb-1 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+            {item.category}
+          </p>
+          <h3 className="text-white text-lg font-semibold transition-colors duration-300 group-hover:text-[#00A859]">
+            {item.title}
+          </h3>
+        </div>
+      </GlassCard>
+    </Link>
   );
 });
 PortfolioItemCard.displayName = "PortfolioItemCard";
@@ -155,34 +163,38 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {/* Search Bar and Dropdown */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-around gap-4 mb-6">
         
-        {/* Search Input */}
-        <div className="flex w-full sm:w-2/3 lg:w-2/3 border border-gray-700 rounded-lg overflow-hidden shadow-xl">
+        {/* Search Input (Wrapped in GlassCard) */}
+        <GlassCard className="flex w-full sm:w-2/3 lg:w-2/3 rounded-lg overflow-hidden shadow-xl">
           <input
             type="text"
-            // Placeholder text
             placeholder="Search by name" 
             value={searchTermInput}
             onChange={handleInputChange}
-            className="flex-grow p-3 bg-gray-900 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#00A859] transition duration-150"
+            // Input is transparent
+            className="flex-grow p-3 bg-transparent border-0 text-gray-200 rounded-lg placeholder-gray-500  transition duration-150"
           />
-        </div>
+        </GlassCard>
 
-        {/* Sort Dropdown */}
+        {/* Sort Dropdown (Original div, with Glass styling on the <select>) */}
         <div className="relative w-full sm:w-1/3 lg:w-1/3 group">
+        
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
+            // UPDATED: GlassCard styling applied directly to the select element
             className={`
-              block appearance-none w-full bg-gray-900 border border-gray-700 text-gray-200 py-3 px-4 pr-8 rounded-lg shadow-xl 
-              leading-tight focus:outline-none focus:bg-gray-800 transition duration-150 cursor-pointer
-              hover:border-[#00A859] focus:border-[#00A859] 
+              block appearance-none w-full text-gray-200 py-3 px-4 pr-8 rounded-lg leading-tight transition duration-150 cursor-pointer
+              bg-white/5 backdrop-blur-md border border-white/5 shadow-xl
+              
+              hover:border-white/20
             `}
           >
-            <option value="latest">Latest</option>
-            <option value="az">A to Z</option>
-            <option value="za">Z to A</option>
-          </select>
-          {/* SVG container now uses group-hover/focus-within to change arrow color to green */}
+            {/* UPDATED: Options styled for dark mode */}
+            <option value="latest" className="bg-gray-900 text-gray-200">Latest</option>
+            <option value="az" className="bg-gray-900  text-gray-200">A to Z</option>
+            <option value="za" className="bg-gray-900  text-gray-200">Z to A</option>
+          </select> 
+          {/* Arrow icon */}
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 
                         group-hover:text-[#00A859] group-focus-within:text-[#00A859] transition duration-150">
             <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -192,28 +204,28 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </div>
       </div>
 
-      {/* Category Filter Buttons (Glass effect container) */}
-      <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl shadow-2xl p-6">
+      {/* Category Filter Buttons (Wrapped in GlassCard) */}
+      <GlassCard className="rounded-xl shadow-2xl p-6">
         <div className="flex flex-wrap justify-center gap-2 md:gap-3">
           {CATEGORIES.map((category) => (
             <button
-              key={category.id} // Use category.id as the key
+              key={category.id}
               onClick={() => {
-                setActiveCategory(category.name); // Use category.name for setting the active category
+                setActiveCategory(category.name);
               }}
               className={`
                 px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
-                ${activeCategory === category.name // Compare with category.name
-                  ? 'bg-[#00A859] text-white shadow-lg shadow-[#00A859]/50 transform scale-105' // Active color
+                ${activeCategory === category.name
+                  ? 'bg-[#00A859] text-white shadow-lg shadow-[#00A859]/50 transform scale-105'
                   : 'text-gray-300 hover:bg-[#00A859] hover:text-white hover:shadow-md hover:scale-105 border border-gray-700' 
                 }
               `}
             >
-              {category.name} {/* Display category.name */}
+              {category.name}
             </button>
           ))}
         </div>
-      </div>
+      </GlassCard>
     </div>
   );
 };

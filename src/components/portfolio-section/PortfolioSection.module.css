@@ -28,14 +28,36 @@
   @apply text-center text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mt-24 mb-12;
 }
 
-.projectsGrid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+/* === New Stacking Wrapper === */
+.projectsWrapper {
+  @apply relative grid grid-cols-1; 
+  /* This creates the stacking context */
 }
 
-.projectCard {
-  @apply pb-4 rounded-2xl transition-all duration-300;
+/* Layer 1: The Blurred Background "Tray" */
+.projectsGridBackground {
+  @apply [grid-area:1/1] rounded-3xl z-0; 
+  /* Sits at the bottom */
   background-color: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(50px);
+}
+
+/* Layer 2: The 3D Card Grid */
+.projectsGrid {
+  @apply [grid-area:1/1] relative z-10; 
+  /* Sits on top of the blur */
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8;
+  /* Added p-8 so cards don't touch the edge of the blur tray */
+}
+
+/* The 3D Card itself - now transparent! */
+.projectCard {
+  @apply pb-4 p-2 rounded-2xl transition-all duration-300;
+  /* We removed the background-color and backdrop-filter.
+    The card is now fully transparent, letting the "tray" show through.
+    We can add a subtle background just for the card if needed.
+  */
+   background-color: rgba(14, 0, 0, 0.477); /* Optional: subtle card color */
 }
 
 .projectCard:hover {
@@ -44,11 +66,15 @@
 }
 
 .projectImageContainer {
-  @apply bg-black/50 h-80 rounded-lg mb-4;
+  @apply relative aspect-video w-full rounded-lg overflow-hidden mb-4;
 }
 
-.projectCard p {
+.projectTitle {
   @apply text-center font-semibold text-gray-300;
+}
+
+.projectDescription {
+  @apply text-center text-sm text-gray-400 mt-2 px-4;
 }
 
 .loadMoreButton {
@@ -82,13 +108,12 @@
     @apply text-3xl mt-16 mb-8; /* Adjust title size and spacing */
   }
 
-  .projectImageContainer {
-    @apply h-64; /* Reduce the height of project image placeholders */
+  /* Adjust padding for the grid on mobile */
+  .projectsGrid {
+    @apply p-4;
   }
-  .loadMoreButton {
-  
-  max-width: 50%;
-}
 
-  
+  .loadMoreButton {
+    max-width: 50%;
+  }
 }

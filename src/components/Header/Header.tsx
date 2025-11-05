@@ -1,33 +1,32 @@
-// 1. ADD "use client" - This is required for useState
+// src/components/Header/Header.tsx
 "use client"; 
 
-// 2. Import useState
+// 1. Import Link from next/link and useRouter
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // <-- ADD THIS
 import ShineButton from '../ui/ShineButton';
 import styles from './Header.module.css';
-
-// 3. Import icons for the menu
-import { Menu, X } from 'lucide-react'; // You'll need to install lucide-react: npm install lucide-react
+import { Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { name: 'Home', href: '#' },
-  { name: 'About', href: '#' },
-  { name: 'Services', href: '#' },
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/#about' },
+  { name: 'Services', href: '/#services' },
   { name: 'Portfolio', href: '/portfolio' },
-  { name: 'Contact', href: '#' },
-  { name: 'Games', href: '#' },
+  { name: 'Contact', href: '/#contact' },
+  { name: 'Games', href: '/portfolio' },
 ];
 
 const Header = () => {
-  // 4. Add state to track if the mobile menu is open
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter(); // <-- 2. Initialize the router
 
   return (
-    // The z-index on the header (50) needs to be lower than the mobile menu (100)
     <header className="sticky top-4 z-50 mx-4 md:mx-auto max-w-5xl"> 
       <nav className={styles.navbar}>
-        {/* Logo (No changes needed) */}
+        {/* Logo */}
         <Image
           src="/Cloudplay xp white logo.png"
           alt="CloudPlayXP Logo"
@@ -36,55 +35,54 @@ const Header = () => {
           priority
         />
 
-        {/* Desktop Navigation Links (Your existing code is perfect) */}
+        {/* 3. Desktop Navigation Links (use <Link>) */}
         <ul className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
             <li key={link.name}>
-              <a href={link.href} className="text-gray-100 hover:text-white transition-colors">
+              {/* REPLACE <a> with <Link> */}
+              <Link href={link.href} className="text-gray-100 hover:text-white transition-colors">
                 {link.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
-        {/* Desktop CTA Button 
-            5. ADD: "hidden md:block" to hide this on mobile
-        */}
+        {/* 4. Desktop CTA Button (use <Link> wrapper) */}
         <div className="hidden md:block">
-          <ShineButton className="py-1 px-4 text-l font-medium">
-            Let&apos;s Connect
-          </ShineButton>
+          {/* We wrap the button in a <Link> tag */}
+          <Link href="/#contact">
+            <ShineButton className="py-1 px-4 text-l font-medium">
+              Let&apos;s Connect
+            </ShineButton>
+          </Link>
         </div>
 
-        {/* 6. ADD: Mobile Burger Menu Button 
-            This button is ONLY visible on mobile (md:hidden)
-        */}
+        {/* Mobile Burger Menu Button */}
         <button
-          className="md:hidden z-[101] text-white" // z-[101] keeps it above the menu overlay
-          onClick={() => setIsMenuOpen(!isMenuOpen)} // Toggles the state
+          className="md:hidden z-[101] text-white" 
+          onClick={() => setIsMenuOpen(!isMenuOpen)} 
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
-      {/* 7. ADD: Mobile Menu Overlay 
-          This entire div only appears if isMenuOpen is true
-      */}
+      {/* 5. Mobile Menu Overlay (use <Link> and router.push) */}
       {isMenuOpen && (
         <div 
           className="md:hidden fixed inset-0 w-full h-screen bg-black/90 backdrop-blur-lg z-[100] flex flex-col items-center justify-center"
-          onClick={() => setIsMenuOpen(false)} // Click background to close
+          onClick={() => setIsMenuOpen(false)} 
         >
           <ul className="flex flex-col items-center gap-8 mb-12">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <a 
+                {/* REPLACE <a> with <Link> */}
+                <Link 
                   href={link.href} 
                   className="text-gray-100 hover:text-white transition-colors text-2xl font-semibold"
-                  onClick={(e) => e.stopPropagation()} // Don't close menu if link is clicked
+                  onClick={(e) => e.stopPropagation()} 
                 >
                   {link.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -92,7 +90,11 @@ const Header = () => {
           {/* CTA Button for mobile menu */}
           <ShineButton 
             className="py-2 px-6 text-xl font-medium"
-            onClick={(e) => e.stopPropagation()} // Don't close menu if button is clicked
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push('/#contact'); // <-- Use router.push
+              setIsMenuOpen(false);
+            }}
           >
             Let&apos;s Connect
           </ShineButton>
