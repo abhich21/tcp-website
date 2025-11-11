@@ -38,14 +38,8 @@ export default function Home() {
       <Hero /> {/* 2. Add the Hero component here */}
       <PortfolioSection /> {/* 2. Add the new section */}
       <PartnersSection logos={partnerLogos} />
-      <section id="services">
-        <Services/>
-      </section>
-      
-      <ServicesMarquee /> 
-
       <section className="w-full h-auto py-10 px-4">
-        <h2 className="text-center text-2xl md:text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-16">
+        <h2 className="text-center text-2xl md:text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-10">
           Client <span className="text-lime-400">Testimonials</span>
         </h2>
         
@@ -55,9 +49,19 @@ export default function Home() {
           </div>
         </GlassCard>
       </section>
+      <section id="services">
+        <Services/>
+      </section>
+      
+      <ServicesMarquee /> 
+
       
       <section id="about">
         <MeetTheTeam/>
+      </section>
+
+      <section id="faq">
+        <FaqSection/>
       </section>
 
       <section id="contact">

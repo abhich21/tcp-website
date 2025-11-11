@@ -34,7 +34,8 @@
 }
 
 .cardIcon {
-  @apply w-16 h-16 bg-lime-200/10 rounded-xl mb-6 flex items-center justify-center text-lime-300;
+  /* --- MODIFICATION: Removed mb-6 --- */
+  @apply w-16 h-16 bg-lime-200/10 rounded-xl flex items-center justify-center text-lime-300;
 }
 
 .cardTitle {
@@ -83,7 +84,8 @@
   }
 
   .cardIcon {
-    @apply w-12 h-12 mb-4; /* Smaller icon */
+    @apply w-12 h-12; /* Smaller icon */
+    /* mb-4 was here, but it's removed from the base class */
   }
 
   .cardTitle {

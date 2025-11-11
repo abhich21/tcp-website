@@ -14,7 +14,7 @@
   @apply flex items-start;
 }
 .logoCardContainer {
-  /* Override 3D card's default padding and centering */
+  
   @apply !p-4 !flex-none; 
 }
 .logo {

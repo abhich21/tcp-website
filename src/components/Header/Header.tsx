@@ -17,6 +17,7 @@ const navLinks = [
   { name: 'Portfolio', href: '/portfolio' },
   { name: 'Contact', href: '/#contact' },
   { name: 'Games', href: '/portfolio' },
+  { name: 'FAQs', href: '/#faq' },
 ];
 
 const Header = () => {
