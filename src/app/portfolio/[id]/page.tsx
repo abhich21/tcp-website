@@ -58,12 +58,6 @@ const VideoPlayer: React.FC<{ media: MediaItem }> = React.memo(({ media }) => {
     : `https://player.vimeo.com/video/${media.url}?autoplay=0&loop=0&byline=0&portrait=0`;
 
   return (
-    <>
-        <style jsx global>{`
-            .player {
-                height: auto !important;
-            }
-        `}</style>
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-10">
       <div className="relative overflow-hidden pt-[56.25%] rounded-xl shadow-2xl border-4 border-gray-700">
         <iframe
@@ -81,7 +75,6 @@ const VideoPlayer: React.FC<{ media: MediaItem }> = React.memo(({ media }) => {
         </p>
       )}
     </div>
-    </>
   );
 });
 VideoPlayer.displayName = "VideoPlayer";
