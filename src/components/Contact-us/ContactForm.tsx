@@ -11,6 +11,7 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '', // <-- 1. Add phone to state
     message: '',
   });
 
@@ -29,7 +30,12 @@ const ContactForm = () => {
     // In a real application, you would send this data to an API endpoint
     console.log('Form data submitted:', formData);
     // You could add a success message here
-    setFormData({ name: '', email: '', message: '' }); // Reset form
+    setFormData({ 
+      name: '', 
+      email: '', 
+      phone: '', // <-- 3. Reset phone field
+      message: '' 
+    });
   };
 
   return (
@@ -68,6 +74,23 @@ const ContactForm = () => {
               required
             />
           </div>
+
+          {/* v-- 2. Add this phone input block --v */}
+          <div className={styles.inputGroup}>
+            <label htmlFor="phone" className={styles.label}>Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className={styles.inputField}
+              placeholder="Enter your phone number"
+              required 
+              // You can remove 'required' if the phone number is optional
+            />
+          </div>
+          {/* ^-- End of new phone input block --^ */}
 
           <div className={styles.inputGroup}>
             <label htmlFor="message" className={styles.label}>Your Message</label>

@@ -69,7 +69,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         <GlassCard className="max-w-xl mx-auto p-8 md:p-12 rounded-3xl">
           <h1 className="text-3xl font-bold text-white mb-4">Service Not Found</h1>
           <p className="text-gray-300 mb-8">
-            The service you're looking for ('{slug}') doesn't exist or may have been moved.
+            The service you&apos;re looking for (&apos;{slug}&apos;) doesn&apos;t exist or may have been moved.
           </p>
           <Link 
             href="/#services"

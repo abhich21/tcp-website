@@ -10,6 +10,7 @@ const ContactStepper = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '', // <-- 1. Add phone to state
     service: 'default',
     message: '',
   });
@@ -35,7 +36,7 @@ const ContactStepper = () => {
       </h2>
 
       {/* Wrap the Stepper in your GlassCard for the consistent theme.
-        We apply padding here to the card.
+          We apply padding here to the card.
       */}
       <GlassCard className="p-4 md:p-2 rounded-3xl">
         <Stepper onFinalStepCompleted={handleSubmit}>
@@ -73,6 +74,23 @@ const ContactStepper = () => {
                   placeholder="your.email@example.com"
                 />
               </div>
+
+              {/* v-- 2. Add this phone input block --v */}
+              <div className={styles.inputGroup}>
+                <label htmlFor="phone" className={styles.label}>Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={styles.inputField}
+                  placeholder="Your Phone Number (Optional)"
+                  // Add 'required' if it's not optional
+                />
+              </div>
+              {/* ^-- End of new phone input block --^ */}
+
             </div>
           </Step>
 
@@ -130,6 +148,8 @@ const ContactStepper = () => {
               <div className={styles.summary}>
                 <p><strong>Name:</strong> {formData.name}</p>
                 <p><strong>Email:</strong> {formData.email}</p>
+                {/* 3. Add phone to summary */}
+                <p><strong>Phone:</strong> {formData.phone}</p>
                 <p><strong>Service:</strong> {formData.service}</p>
               </div>
             </div>
