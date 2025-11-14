@@ -35,7 +35,7 @@ export default function AnimatedText({ text, className }: AnimatedTextProps) {
       {/* Placeholder for animated OGL text. The font will be Montserrat from layout.tsx. */}
       <h1 
         ref={textRef} 
-        className="text-7xl md:text-9xl font-montserrat font-bold text-center"
+        className="!text-5xl sm:!text-7xl md:!text-8xl !text-center !font-bold !text-white tracking-widest"
         style={{
             // Add a subtle text shadow to simulate glow
             textShadow: '0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(100, 100, 255, 0.3)'

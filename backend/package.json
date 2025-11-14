@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:generate": "node prisma_generate.js",
+    "prisma:migrate": "dotenv -e .env -- npx prisma migrate dev",
+    "prisma:studio": "npx dotenv -e .env -- prisma studio",
+    "prisma:seed": "node prisma/seed.js",
+    "start": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "aws-sdk": "^2.1692.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1",
+    "mysql2": "^3.15.3",
+    "nodemon": "^3.1.11",
+    "pg": "^8.16.3",
+    "prisma": "^6.19.0"
+  },
+  "devDependencies": {
+    "@prisma/config": "^6.19.0",
+    "dotenv-cli": "^11.0.0"
+  }
+}
