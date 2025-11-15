@@ -1,128 +1,99 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useEffect, useRef, Fragment } from 'react';
-// 1. Import Next.js Link
-import Link from 'next/link';
+import React, { useState, useEffect, useMemo, useCallback, useRef, Fragment  } from "react";
+import Link from "next/link";
+import AnimatedText from "@/components/AnimatedText/AnimatedText";
+import GlassCard from "@/components/ui/GlassCard/GlassCard";
 
-// 2. FIX: Temporarily replace the external import with a local mock component
-// import AnimatedText from "@/components/AnimatedText/AnimatedText"; 
-
-// 3. Import GlassCard
-import GlassCard from '@/components/ui/GlassCard/GlassCard';
-
-// 4. NEW IMPORTS for Headless UI Listbox and icons
 import { Listbox, Transition } from '@headlessui/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
+/* -------------------------
+   Constants / Mock (kept as-is)
+   ------------------------- */
+const MIN_CHARS = 2;
+const DEBOUNCE_DELAY_MS = 1000;
+const ITEMS_PER_PAGE = 9;
 
-// --- 0. LOCAL COMPONENT DEFINITION (Replacement for missing AnimatedText) ------------------
-
-/**
- * Simplified AnimatedText component to replace the external dependency.
- * Retains the requested styling for the title.
- */
-const AnimatedText: React.FC<{ text: string; className?: string }> = ({ text, className }) => {
-  // Using a simple h1 tag with the passed class names for display
-  return (
-    <h1 className={`font-inter ${className || 'text-7xl md:text-8xl text-white font-bold tracking-widest'}`}>
-      {text}
-    </h1>
-  );
-};
-AnimatedText.displayName = "AnimatedText";
-
-
-// --- 1. MOCK DATA & TYPES ---------------------------------------------------
-
-// Define the type for a single portfolio item
-interface PortfolioItem {
+interface MockItem {
   id: number;
   title: string;
   category: string;
   imageUrl: string;
-  date: string; // Used for "Latest" sorting
+  date: string;
+}
+// const MOCK_PORTFOLIO_DATA: MockItem[] = [
+//   { id: 1, title: "The CloudPlay Showreel", category: "Animation", imageUrl: "hero-carousel/slide1.jpg", date: "2023-10-25" },
+//   { id: 2, title: "HSBC Mastercard", category: "Event Content", imageUrl: "hero-carousel/slide4.jpg", date: "2023-10-20" },
+//   { id: 3, title: "HSBC Emerge", category: "Event Design", imageUrl: "hero-carousel/slide3.png", date: "2023-10-15" },
+//   { id: 4, title: "AMD", category: "Event Design", imageUrl: "https://placehold.co/600x400/1e293b/cbd5e1?text=AMD", date: "2023-10-10" },
+//   { id: 5, title: "Volvo Product launch musical AV", category: "3D, Anamorphic, CGI & VFX", imageUrl: "https://placehold.co/600x400/1e293b/cbd5e1?text=Volvo+AV", date: "2023-10-05" },
+//   { id: 6, title: "AstraZeneca product AV", category: "Animation", imageUrl: "https://placehold.co/600x400/1e293b/cbd5e1?text=AstraZeneca+AV", date: "2023-09-30" },
+//   { id: 7, title: "AstraZeneca launch", category: "Event Content", imageUrl: "https://placehold.co/600x400/1e293b/cbd5e1?text=AstraZeneca+Launch", date: "2023-09-25" },
+//   { id: 8, title: "Nestle SS Conclave 2025 Post event AV", category: "Event Design", imageUrl: "https://placehold.co/600x400/1e293b/cbd5e1?text=Nestle+AV", date: "2023-09-20" },
+//   { id: 9, title: "Sabha Post event AV", category: "3D, Anamorphic, CGI & VFX", imageUrl: "https://placehold.co/600x400/1e293b/cbd5e1?text=Sabha+AV", date: "2023-09-15" },
+//   { id: 10, title: "Project Echo Alpha", category: "Games", imageUrl: "https://placehold.co/600x400/0f172a/94a3b8?text=Echo+Alpha", date: "2023-09-10" },
+//   { id: 11, title: "Project Beta Bridge", category: "Home Look", imageUrl: "https://placehold.co/600x400/0f172a/94a3b8?text=Beta+Bridge", date: "2023-09-05" },
+//   { id: 12, title: "Project Gamma Tower", category: "Presentation Design", imageUrl: "https://placehold.co/600x400/0f172a/94a3b8?text=Gamma+Tower", date: "2023-09-01" },
+//   { id: 13, title: "Project Delta Dash", category: "Event Design", imageUrl: "https://placehold.co/600x400/0f172a/94a3b8?text=Delta+Dash", date: "2023-08-28" },
+// ];
+
+/* -------------------------
+   Interface matching backend schema
+   Prisma model:
+   model PortfolioItem {
+     id Int
+     title String
+     category_id Int
+     category_name String?
+     details Json
+     description String?
+     image String
+     created_at DateTime
+     updated_at DateTime
+   }
+   ------------------------- */
+interface PortfolioItem {
+  id: number;
+  title: string;
+  category_id: number;
+  category_name?: string | null;
+  details: JSON; // JSON array
+  description?: string | null;
+  image: string;
+  created_at: string;
+  updated_at: string;
 }
 
-// Define available categories
-const CATEGORIES = [
-  { id: 0, name: 'All' },
-  { id: 1, name: 'Event Design' },
-  { id: 2, name: '3D, Anamorphic, CGI & VFX' },
-  { id: 4, name: 'Animation' },
-  { id: 5, name: 'Event Content' }, 
-  { id: 6, name:'Games'}, 
-  { id: 7, name:'Home Look'}, 
-  { id: 8, name:'Presentation Design'}, 
-  { id: 9, name:'About Us'}, 
-  { id: 10, name:'Brochure'}, 
-  { id: 11, name:'Team Building & Simulations'}
-];
-
-// Helper function to get category name by ID (Needed for local storage logic)
-const getCategoryNameById = (id: number): string | undefined => {
-    return CATEGORIES.find(c => c.id === id)?.name;
-};
-
-// Mock data based on the screenshot (using placeholder images and dates)
-const MOCK_PORTFOLIO_DATA: PortfolioItem[] = [
-  // Row 1
-  { id: 1, title: 'The CloudPlay Showreel', category: 'Animation', imageUrl: 'hero-carousel/slide1.jpg', date: '2023-10-25' },
-  { id: 2, title: 'HSBC Mastercard', category: 'Event Content', imageUrl: 'hero-carousel/slide4.jpg', date: '2023-10-20' },
-  { id: 3, title: 'HSBC Emerge', category: 'Event Design', imageUrl: 'hero-carousel/slide3.png', date: '2023-10-15' },
-  // Row 2
-  { id: 4, title: 'AMD', category: 'Event Design', imageUrl: 'https://placehold.co/600x400/1e293b/cbd5e1?text=AMD', date: '2023-10-10' },
-  { id: 5, title: 'Volvo Product launch musical AV', category: '3D, Anamorphic, CGI & VFX', imageUrl: 'https://placehold.co/600x400/1e293b/cbd5e1?text=Volvo+AV', date: '2023-10-05' },
-  { id: 6, title: 'AstraZeneca product AV', category: 'Animation', imageUrl: 'https://placehold.co/600x400/1e293b/cbd5e1?text=AstraZeneca+AV', date: '2023-09-30' },
-  // Row 3
-  { id: 7, title: 'AstraZeneca launch', category: 'Event Content', imageUrl: 'https://placehold.co/600x400/1e293b/cbd5e1?text=AstraZeneca+Launch', date: '2023-09-25' },
-  { id: 8, title: 'Nestle SS Conclave 2025 Post event AV', category: 'Event Design', imageUrl: 'https://placehold.co/600x400/1e293b/cbd5e1?text=Nestle+AV', date: '2023-09-20' },
-  { id: 9, title: 'Sabha Post event AV', category: '3D, Anamorphic, CGI & VFX', imageUrl: 'https://placehold.co/600x400/1e293b/cbd5e1?text=Sabha+AV', date: '2023-09-15' },
-  
-  // Additional mock items for "Load More"
-  { id: 10, title: 'Project Echo Alpha', category: 'Games', imageUrl: 'https://placehold.co/600x400/0f172a/94a3b8?text=Echo+Alpha', date: '2023-09-10' },
-  { id: 11, title: 'Project Beta Bridge', category: 'Home Look', imageUrl: 'https://placehold.co/600x400/0f172a/94a3b8?text=Beta+Bridge', date: '2023-09-05' },
-  { id: 12, title: 'Project Gamma Tower', category: 'Presentation Design', imageUrl: 'https://placehold.co/600x400/0f172a/94a3b8?text=Gamma+Tower', date: '2023-09-01' },
-  { id: 13, title: 'Project Delta Dash', category: 'Event Design', imageUrl: 'https://placehold.co/600x400/0f172a/94a3b8?text=Delta+Dash', date: '2023-08-28' },
-];
-
-const MIN_CHARS = 3; // Minimum characters required for search to activate
-const DEBOUNCE_DELAY_MS = 1000; // 1 second delay
-
-// --- 2. COMPONENTS -----------------------------------------------------------
-
-/**
- * Component for a single portfolio item card.
- * UPDATED: Uses Next.js <Link> and wraps content in <GlassCard>.
- */
+/* -------------------------
+   Presentational components (memoized)
+   ------------------------- */
 const PortfolioItemCard: React.FC<{ item: PortfolioItem }> = React.memo(({ item }) => {
+  const imageSrc = item.image || "https://placehold.co/600x224/1e293b/cbd5e1?text=Project+Image";
+  const categoryLabel = item.category_name || "Uncategorized";
   return (
-    <Link 
-      href={`/portfolio/${item.id}`} 
-      // Main <Link> tag controls layout, hover effects, and rounded shape
+    <Link
+      href={`/portfolio/${item.id}`}
       className="group block w-full rounded-xl overflow-hidden shadow-2xl transition-all duration-300 transform hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(0,168,89,0.8)]"
     >
-      {/* GlassCard now provides the glass background and border */}
       <GlassCard className="w-full h-full">
-        {/* 1. Image Area: Fixed height to prevent layout collapse */}
         <div className="relative w-full h-48 sm:h-56 overflow-hidden bg-gray-900">
           <img
-            src={item.imageUrl}
+            src={imageSrc}
             alt={item.title}
-            // The image fills the area and crops itself (object-cover)
             className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-80"
             loading="lazy"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.onerror = null;
-              target.src = 'https://placehold.co/600x224/1e293b/cbd5e1?text=Project+Image'; // Using 600x224 for 56h
+              target.src = "https://placehold.co/600x224/1e293b/cbd5e1?text=Project+Image";
             }}
           />
         </div>
 
-        {/* 2. Text Area: Consistent height and styling below the image */}
         <div className="p-4 min-h-[90px] flex flex-col justify-center">
           <p className="text-xs text-gray-300 mb-1 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-            {item.category}
+            {categoryLabel}
           </p>
           <h3 className="text-white text-lg font-semibold transition-colors duration-300 group-hover:text-[#00A859]">
             {item.title}
@@ -134,28 +105,34 @@ const PortfolioItemCard: React.FC<{ item: PortfolioItem }> = React.memo(({ item 
 });
 PortfolioItemCard.displayName = "PortfolioItemCard";
 
-
-/**
- * Component for the search bar, category filters, and sorting dropdown.
- */
+/* -------------------------
+   FilterBar component (memoized)
+   ------------------------- */
+interface CategoryType {
+  id: number;
+  name: string;
+}
 interface FilterBarProps {
-  searchTermInput: string; // The raw, immediate value from the input
-  onSearchInputChange: (query: string) => void;
-  activeCategory: string;
-  setActiveCategory: (category: string) => void;
+  searchTermInput: string;
+  onSearchInputChange: (value: string) => void;
+  activeCategoryId: number | null; // store category by id for simpler mapping
+  setActiveCategoryId: (id: number | null) => void;
   sortBy: string;
-  setSortBy: (sort: string) => void;
+  setSortBy: (s: string) => void;
+  categories: CategoryType[]; // includes an "All" entry with id = 1
+  isLoadingCategories: boolean;
 }
 
-const FilterBar: React.FC<FilterBarProps> = ({
+const FilterBar: React.FC<FilterBarProps> = React.memo(({
   searchTermInput,
   onSearchInputChange,
-  activeCategory,
-  setActiveCategory,
+  activeCategoryId,
+  setActiveCategoryId,
   sortBy,
   setSortBy,
+  categories,
+  isLoadingCategories
 }) => {
-  
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     onSearchInputChange(e.target.value);
   }, [onSearchInputChange]);
@@ -171,21 +148,36 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <div className="w-full max-w-7xl px-4 lg:px-0 mx-auto mb-12">
-      
-      {/* Search Bar and Dropdown */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-around gap-4 mb-6">
-        
-        {/* Search Input (Wrapped in GlassCard) */}
         <GlassCard className="flex w-full sm:w-2/3 lg:w-2/3 rounded-lg overflow-hidden shadow-xl">
           <input
             type="text"
-            placeholder="Search by name" 
+            placeholder="Search by name"
             value={searchTermInput}
             onChange={handleInputChange}
-            // Input is transparent
-            className="flex-grow p-3 bg-transparent border-0 text-gray-200 rounded-lg placeholder-gray-500  transition duration-150"
+            className="flex-grow p-3 bg-transparent border-0 text-gray-200 rounded-lg placeholder-gray-500 transition duration-150"
           />
         </GlassCard>
+
+        {/* <div className="relative w-full sm:w-1/3 lg:w-1/3 group">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className={`
+              block appearance-none w-full text-gray-200 py-3 px-4 pr-8 rounded-lg leading-tight transition duration-150 cursor-pointer
+              bg-white/5 backdrop-blur-md border border-white/5 shadow-xl hover:border-white/20
+            `}
+          >
+            <option value="latest" className="bg-gray-900 text-gray-200">Latest</option>
+            <option value="az" className="bg-gray-900 text-gray-200">A to Z</option>
+            <option value="za" className="bg-gray-900 text-gray-200">Z to A</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 group-hover:text-[#00A859] transition duration-150">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+        </div> */}
 
         {/* --- MODIFICATION START: Replaced <select> with <Listbox> --- */}
         <div className="relative w-full sm:w-1/3 lg:w-1/3">
@@ -249,202 +241,306 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </Listbox>
         </div>
         {/* --- MODIFICATION END --- */}
-
       </div>
 
-      {/* Category Filter Buttons (Wrapped in GlassCard) */}
       <GlassCard className="rounded-xl shadow-2xl p-6">
         <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-          {CATEGORIES.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => {
-                setActiveCategory(category.name);
-              }}
-              className={`
-                px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
-                ${activeCategory === category.name
-                  ? 'bg-[#00A859] text-white shadow-lg shadow-[#00A859]/50 transform scale-105'
-                  : 'text-gray-300 hover:bg-[#00A859] hover:text-white hover:shadow-md hover:scale-105 border border-gray-700' 
-                }
-              `}
-            >
-              {category.name}
-            </button>
-          ))}
+          {isLoadingCategories ? (
+            // simple skeleton while loading
+            <div className="h-8 w-full flex items-center justify-center text-gray-500">Loading categories...</div>
+          ) : (
+            categories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategoryId(cat.id === 1 ? 1 : cat.id)} // id=1 == All (backend convention)
+                className={`
+                  px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
+                  ${activeCategoryId === cat.id
+                    ? 'bg-[#00A859] text-white shadow-lg shadow-[#00A859]/50 transform scale-105'
+                    : 'text-gray-300 hover:bg-[#00A859] hover:text-white hover:shadow-md hover:scale-105 border border-gray-700'
+                  }
+                `}
+              >
+                {cat.name}
+              </button>
+            ))
+          )}
         </div>
       </GlassCard>
     </div>
   );
-};
+});
 FilterBar.displayName = "FilterBar";
 
-
-// --- 3. MAIN PAGE COMPONENT --------------------------------------------------
-
+/* -------------------------
+   Main Page component
+   ------------------------- */
 export default function PortfolioPage() {
-  const ITEMS_PER_LOAD = 9; // Number of cards to load at a time
+  // categories and loading
+  const [categories, setCategories] = useState<CategoryType[]>([{ id: 1, name: "All" }]); 
+  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true);
 
-  // State Management
-  const [searchTermInput, setSearchTermInput] = useState(''); // Raw input from the user
-  const [searchQuery, setSearchQuery] = useState(''); // Debounced and validated query used for filtering
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [sortBy, setSortBy] = useState('latest'); // 'latest', 'az', 'za'
-  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_LOAD);
-  const [isLoading, setIsLoading] = useState(false); // For simulating loading
+  // server-driven list
+  const [items, setItems] = useState<PortfolioItem[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // --- Debouncing Logic ---
+  // filters / UI state
+  const [searchTermInput, setSearchTermInput] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [activeCategoryId, setActiveCategoryId] = useState<number | null>(1); // default All => 1
+  const [sortBy, setSortBy] = useState<string>("latest");
+
+  // keep a ref to AbortController so we can cancel fetches
+  const fetchControllerRef = useRef<AbortController | null>(null);
+
+  // keep stable mapping of categories by name/id for quick lookups (memo)
+  const categoryMap = useMemo(() => {
+    const map = new Map<number | string, string>();
+    for (const c of categories) map.set(c.id, c.name);
+    return map;
+  }, [categories]);
+
+   /* -----------------------------------
+      On mount, restore the last active category from localStorage.
+      (Used when coming back from /portfolio/:id)
+  ----------------------------------- */
   useEffect(() => {
-    // Set up a timer to update the actual search query after a delay
-    const handler = setTimeout(() => {
-      const trimmedInput = searchTermInput.trim();
-      
-      if (trimmedInput.length >= MIN_CHARS || trimmedInput.length === 0) {
-        // Update the actual query if it meets the minimum char count or is empty (to clear search)
-        setSearchQuery(trimmedInput);
-      } else {
-        // If the query is too short but not empty, ensure the actual filter query is empty 
-        setSearchQuery(''); 
+    try {
+      const saved = localStorage.getItem("portfolio_last_category_id");
+      if (saved) {
+        const parsed = parseInt(saved);
+        if (!isNaN(parsed)) {
+          setActiveCategoryId(parsed);
+        }
       }
+    } catch (e) {
+      console.error("LocalStorage error:", e);
+    }
+  }, []);
+
+  /* -------------------------
+     Fetch categories from API once (on mount)
+     - Keep 'All' (id=1) as first entry (if API doesn't return it)
+     ------------------------- */
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      setIsLoadingCategories(true);
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`);
+        const data = await res.json();
+        if (!mounted) return;
+        if (Array.isArray(data)) {
+          // ensure "All" with id 1 present (backend uses category_id=1 as All)
+          const hasAll = data.some((d: any) => d.id === 1 || d.name?.toLowerCase() === "all");
+          const normalized = [...data];
+          if (!hasAll) normalized.unshift({ id: 1, name: "All" });
+          setCategories(normalized);
+        } else {
+          setCategories([{ id: 1, name: "All" }]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+        setCategories([{ id: 1, name: "All" }]);
+      } finally {
+        if (mounted) setIsLoadingCategories(false);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+   /* -----------------------------------
+     When user manually changes category, update localStorage
+  ----------------------------------- */
+  const handleSetActiveCategory = useCallback((id: number | null) => {
+    setActiveCategoryId(id);
+    try {
+      if (id !== null) localStorage.setItem("portfolio_last_category_id", String(id));
+    } catch {}
+  }, []);
+
+  /* -------------------------
+     Debounced search: user types into searchTermInput -> after debounce set searchQuery
+     Changing searchQuery triggers server fetch (see effect below)
+     ------------------------- */
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const trimmed = searchTermInput.trim();
+      if (trimmed.length >= MIN_CHARS || trimmed.length === 0) {
+        setSearchQuery(trimmed);
+      }
+      // if trimmed too short (1-2 chars) we keep previous searchQuery (so no flicker)
     }, DEBOUNCE_DELAY_MS);
 
-    // Cleanup function: This is essential for debouncing. It cancels the previous timer.
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchTermInput]); 
+    return () => clearTimeout(handler);
+  }, [searchTermInput]);
 
-  // Effect to reset the visible count and clear search on category change
-  React.useEffect(() => {
-    // Reset visible count on any filter/sort change
-    setVisibleCount(ITEMS_PER_LOAD);
+  /* -------------------------
+     Utility: build query params for API call
+     ------------------------- */
+  const buildApiUrl = useCallback((pageNum: number) => {
+    const base = `${process.env.NEXT_PUBLIC_API_URL}/api/portfolio`;
+    const params = new URLSearchParams();
+    params.set("page", String(pageNum));
+    params.set("limit", String(ITEMS_PER_PAGE)); // if your backend uses limit param (safe to include)
+    // category: backend interprets category_id=1 as all
+    const catIdToSend = activeCategoryId ?? 1;
+    params.set("category_id", String(catIdToSend));
+    // sort mapping: 'latest' | 'atoz' | 'ztoa' (backend expects 'atoz'/'ztoa' or 'latest')
+    if (sortBy === "az") params.set("sort", "atoz");
+    else if (sortBy === "za") params.set("sort", "ztoa");
+    else params.set("sort", "latest");
+    if (searchQuery) params.set("search", searchQuery);
+    return `${base}?${params.toString()}`;
+  }, [activeCategoryId, sortBy, searchQuery]);
 
-    // Clear search states when category is changed, as per common UI expectation
-    if (activeCategory !== 'All' && searchTermInput) {
-      setSearchTermInput('');
-      setSearchQuery('');
+  /* -------------------------
+     Fetch helper: fetch single page from API
+     - appends results when append === true
+     - cancels previous fetch via AbortController
+     ------------------------- */
+  const fetchPage = useCallback(async (pageToFetch: number, append = false) => {
+    // cancel previous fetch
+    if (fetchControllerRef.current) {
+      fetchControllerRef.current.abort();
     }
-  }, [activeCategory, sortBy]); 
+    const controller = new AbortController();
+    fetchControllerRef.current = controller;
 
-  // Memoized function to filter and sort the data (now depends on searchQuery)
-  const filteredAndSortedItems = useMemo(() => {
-    let items = [...MOCK_PORTFOLIO_DATA];
-    
-    // 1. Filtering by Category
-    if (activeCategory !== 'All') {
-      items = items.filter(item => item.category === activeCategory);
-    }
-
-    // 2. Filtering by Search Query (Case Insensitive Title Search)
-    if (searchQuery) { // Only run search if searchQuery is non-empty (which means it passed the debouncing/min-char check)
-      const query = searchQuery.toLowerCase();
-      items = items.filter(item => item.title.toLowerCase().includes(query));
-    }
-    
-    // 3. Sorting
-    items.sort((a, b) => {
-      switch (sortBy) {
-        case 'latest':
-          // Sort by date descending (Newest first)
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
-        case 'az':
-          // Sort by title ascending
-          return a.title.localeCompare(b.title);
-        case 'za':
-          // Sort by title descending
-          return b.title.localeCompare(a.title);
-        default:
-          return 0;
-      }
-    });
-
-    return items;
-  }, [activeCategory, searchQuery, sortBy]);
-
-
-  // Handle "Load More" button click
-  const handleLoadMore = useCallback(() => {
-    if (visibleCount < filteredAndSortedItems.length) {
-      setIsLoading(true);
-      // Simulate an API call or loading delay
-      setTimeout(() => {
-        setVisibleCount(prevCount => prevCount + ITEMS_PER_LOAD);
-        setIsLoading(false);
-      }, 500);
-    }
-  }, [visibleCount, filteredAndSortedItems.length]);
-
-  /**
-   * CRITICAL LOGIC: useEffect to check localStorage on mount for the category ID.
-   * This retrieves the filter state when the user returns to this page.
-   */
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
+    setIsLoading(true);
     try {
-        const storedId = localStorage.getItem('portfolio_last_category_id');
-        if (storedId) {
-            const categoryId = parseInt(storedId, 10);
-            // Use the new helper function
-            const categoryName = getCategoryNameById(categoryId); 
-            
-            // Set the state if a category name was found and it's not the default 'All'
-            if (categoryName && categoryName !== 'All') {
-                setActiveCategory(categoryName); 
-                console.log(`[Persistence] Restored category filter to: ${categoryName} (ID: ${categoryId})`);
-            }
-            localStorage.removeItem('portfolio_last_category_id');
+      const url = buildApiUrl(pageToFetch);
+      const res = await fetch(url, { signal: controller.signal });
+      if (!res.ok) {
+        throw new Error(`Failed fetching portfolio: ${res.status}`);
+      }
+      const json = await res.json();
+      // expected backend response { data: PortfolioItem[], pagination: { totalItems, totalPages, currentPage, itemsPerPage } }
+      const fetchedItems: PortfolioItem[] = Array.isArray(json.data) ? json.data : [];
+      const pagination = json.pagination || {};
+      const fetchedTotalPages = pagination.totalPages ?? 1;
+      const fetchedTotalItems = pagination.totalItems ?? (append ? items.length + fetchedItems.length : fetchedItems.length);
+
+      setTotalPages(fetchedTotalPages);
+      setTotalItems(fetchedTotalItems);
+      setPage(pageToFetch);
+
+      setItems(prev => {
+        if (append) {
+          // avoid duplicates by id
+          const ids = new Set(prev.map(p => p.id));
+          const deduped = fetchedItems.filter(fi => !ids.has(fi.id));
+          return prev.concat(deduped);
+        } else {
+          return fetchedItems;
         }
-    } catch (e) {
-        console.error("[Persistence] Could not read/clear localStorage for category ID:", e);
+      });
+    } catch (err: any) {
+      if (err.name === "AbortError") {
+        // expected when cancelling; ignore silently
+      } else {
+        console.error("Error fetching portfolio items:", err);
+      }
+    } finally {
+      setIsLoading(false);
     }
-    // Empty dependency array ensures this runs only once on mount
-  }, []); 
+  }, [buildApiUrl, items.length]);
 
+  /* -------------------------
+     Effect: initial load and when filters change (category, sort, search)
+     - reset to page 1 and fetch fresh data (no append)
+     ------------------------- */
+  useEffect(() => {
+    // reset items and page then fetch first page
+    setItems([]);
+    setPage(1);
+    setTotalPages(1);
+    // fetch first page (no append)
+    fetchPage(1, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeCategoryId, sortBy, searchQuery]); // fetchPage stable, but include deps explicit: activeCategoryId, sortBy, searchQuery
 
-  // Get the subset of items to display
-  const itemsToDisplay = filteredAndSortedItems.slice(0, visibleCount);
-  const hasMoreToLoad = visibleCount < filteredAndSortedItems.length;
+  /* -------------------------
+     Load more handler (fetch next page and append)
+     ------------------------- */
+  const handleLoadMore = useCallback(() => {
+    if (isLoading) return;
+    if (page >= totalPages) return;
+    const next = page + 1;
+    fetchPage(next, true);
+  }, [fetchPage, isLoading, page, totalPages]);
 
+  /* -------------------------
+     Derived state: whether there is more to load
+     ------------------------- */
+  const hasMoreToLoad = useMemo(() => page < totalPages, [page, totalPages]);
+
+  /* -------------------------
+     UI: activeCategoryName for display (avoid recompute)
+     ------------------------- */
+  const activeCategoryName = useMemo(() => {
+    if (!categories || categories.length === 0) return "All";
+    const found = categories.find(c => c.id === (activeCategoryId ?? 1));
+    return found ? found.name : "All";
+  }, [categories, activeCategoryId]);
+
+  /* -------------------------
+     Render
+     ------------------------- */
   return (
     <main className="pt-20 min-h-screen flex flex-col items-center px-4 relative text-white font-inter">
-      
-      {/* Animated "Portfolio" text */}
       <section className="mb-8 p-4 pt-12">
-        <AnimatedText 
-          text="PORTFOLIO" 
+        <AnimatedText
+          text="PORTFOLIO"
           className="!text-5xl sm:!text-7xl md:!text-8xl !text-center !font-bold !text-white tracking-widest"
         />
       </section>
-      
-      {/* Filter and Search Bar */}
+
       <FilterBar
-        searchTermInput={searchTermInput} // Pass the raw input value
-        onSearchInputChange={setSearchTermInput} // Handler to update the raw input value
-        activeCategory={activeCategory}
-        setActiveCategory={setActiveCategory}
+        searchTermInput={searchTermInput}
+        onSearchInputChange={setSearchTermInput}
+        activeCategoryId={activeCategoryId}
+        setActiveCategoryId={handleSetActiveCategory}
         sortBy={sortBy}
         setSortBy={setSortBy}
+        categories={categories}
+        isLoadingCategories={isLoadingCategories}
       />
-      
+
       <section className="w-full max-w-7xl px-4 lg:px-0 mx-auto">
-        {itemsToDisplay.length === 0 && (
+        {items.length === 0 && !isLoading && (
           <div className="text-center py-20 text-gray-400">
             No projects found matching your criteria.
           </div>
         )}
 
-        {/* Portfolio Item Grid: grid-cols-1 (Mobile), sm:grid-cols-2 (Tablet), lg:grid-cols-3 (Web) */}
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {itemsToDisplay.map(item => (
-            <PortfolioItemCard key={item.id} item={item} />
-          ))}
+          {/* If items empty while loading, show nothing (or you can show placeholders) */}
+          {items.length === 0 && isLoading ? (
+            // show mock placeholders (use the original MOCK to preserve look)
+            [0, 9].map((m, index) => (
+              <div key={`ph-${index}`} className="animate-pulse">
+                <GlassCard className="w-full h-full">
+                  <div className="w-full h-48 bg-gray-800" />
+                  <div className="p-4">
+                    <div className="h-4 bg-gray-700 rounded mb-2 w-3/4" />
+                    <div className="h-3 bg-gray-700 rounded w-1/2" />
+                  </div>
+                </GlassCard>
+              </div>
+            ))
+          ) : (
+            items.map(item => <PortfolioItemCard key={item.id} item={item} />)
+          )}
         </div>
 
-        {/* Load More Button */}
+        {/* Load More */}
         {hasMoreToLoad && (
           <div className="flex justify-center mb-20">
-            {/* Use Green/Teal accent color for Load More button */}
             <button
               onClick={handleLoadMore}
               disabled={isLoading}
@@ -455,7 +551,7 @@ export default function PortfolioPage() {
                 disabled:opacity-50 disabled:cursor-not-allowed
               `}
             >
-              {isLoading ? 'Loading...' : 'Load More'}
+              {isLoading ? "Loading..." : "Load More"}
             </button>
           </div>
         )}
