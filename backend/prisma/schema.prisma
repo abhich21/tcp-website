@@ -1,4 +1,4 @@
-
+// tumul901/tcp-website/tcp-website-d66ffaf1bb64fc577ab80a112ef9305a0440dc75/backend/prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,13 +16,26 @@ model Category {
 }
 
 model PortfolioItem {
-  id             Int      @id @default(autoincrement())
-  title          String
-  category_id    Int
-  category_name  String?
-  details        Json
-  description    String?     // nullable
-  image          String
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
+  id            Int      @id @default(autoincrement())
+  title         String
+  category_id   Int
+  category_name String?
+  details       Json
+  description   String? // nullable
+  image         String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now()) @updatedAt
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String
+  service   String?  @default("other")
+  message   String   @db.Text
+  honeypot  String?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
 }
