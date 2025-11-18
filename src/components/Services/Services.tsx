@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link'; // 1. Import Link
 import styles from './Services.module.css';
-import ScrollStack, { ScrollStackItem } from '../Services/ScrollStack';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import GlassCard from '../ui/GlassCard/GlassCard';
 
 // 2. Import icons from lucide-react

@@ -5,13 +5,15 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import xss from "xss-clean";
+
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser"; // Added for admin authentication
 
 // Route Imports
 import categoryRoutes from "./routes/categoryRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import adminAuthRoutes from "./admin/routes/authRoutes.js"; // Added for admin authentication
 
 const app = express();
 
@@ -26,8 +28,10 @@ app.use(helmet());
 // Parse JSON bodies (with a limit to prevent large payloads)
 app.use(express.json({ limit: "50kb" }));
 
-// Data sanitization against XSS
-app.use(xss());
+// Parse Cookie header
+app.use(cookieParser()); // Added for admin authentication
+
+
 
 // --- Rate Limiter for Contact Form ---
 // This prevents spam and brute-force attacks on the contact endpoint
@@ -42,6 +46,7 @@ const contactLimiter = rateLimit({
 });
 
 // --- Routes ---
+app.use("/api/admin", adminAuthRoutes); // Added for admin authentication
 app.use("/api/categories", categoryRoutes);
 app.use("/api/portfolio", portfolioRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes); // Apply limiter only to this route
