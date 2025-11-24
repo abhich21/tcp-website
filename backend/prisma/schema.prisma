@@ -22,6 +22,7 @@ model PortfolioItem {
   category_name String?
   details       Json
   description   String? // nullable
+  isDeleted     Boolean  @default(false) // Added for soft delete
   image         String
   created_at    DateTime @default(now())
   updated_at    DateTime @default(now()) @updatedAt
@@ -37,5 +38,16 @@ model ContactMessage {
   honeypot  String?
   ip        String?
   userAgent String?
+  createdAt DateTime @default(now())
+}
+
+// Added for Admin Audit Logging
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  actor     String   // Admin username performing the action
+  action    String   // 'CREATE' | 'UPDATE' | 'DELETE'
+  tableName String   // e.g., 'PortfolioItem'
+  recordId  Int      // Affected row ID
+  diff      Json     // { before: {}, after: {} }
   createdAt DateTime @default(now())
 }

@@ -28,7 +28,7 @@ export const uploadToS3 = multer({
   }),
 });
 
-export const getFileUrl = (file) => file.location;
+export const getFileUrl = (req, file) => file.location;
 
 // 🗑️ Delete from S3
 export const deleteFromS3 = async (url) => {

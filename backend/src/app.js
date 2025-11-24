@@ -1,4 +1,3 @@
-// tumul901/tcp-website/tcp-website-d66ffaf1bb64fc577ab80a112ef9305a0440dc7s5/backend/src/app.js
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -14,6 +13,7 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import portfolioRoutes from "./routes/portfolioRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminAuthRoutes from "./admin/routes/authRoutes.js"; // Added for admin authentication
+import portfolioAdminRoutes from "./admin/routes/portfolioAdminRoutes.js";
 
 const app = express();
 
@@ -47,6 +47,7 @@ const contactLimiter = rateLimit({
 
 // --- Routes ---
 app.use("/api/admin", adminAuthRoutes); // Added for admin authentication
+app.use("/api/admin/portfolio", portfolioAdminRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/portfolio", portfolioRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes); // Apply limiter only to this route

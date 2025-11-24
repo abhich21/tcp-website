@@ -66,7 +66,8 @@ export const getAllPortfolioItems = async (req, res) => {
     const search = req.query.search ? req.query.search.trim() : ""; 
 
     // 🧩 Build WHERE clause dynamically
-    let whereClause = {};
+    // MODIFIED: Initialize with soft delete filter
+    let whereClause = { isDeleted: false };
 
     // Category filter (1 = All, skip filter)
     if (categoryId && categoryId !== 1) {
@@ -101,8 +102,9 @@ export const getAllPortfolioItems = async (req, res) => {
       // 🧠 Case 2: Latest sorting with category priority
       if (!categoryId || categoryId === 1) {
         // Include category 9 items first, but still respect search filter if given
-        const whereCategory9 = { category_id: 9 };
-        const whereOthers = { NOT: { category_id: 9 } };
+        // MODIFIED: Added isDeleted: false to both queries
+        const whereCategory9 = { category_id: 9, isDeleted: false };
+        const whereOthers = { NOT: { category_id: 9 }, isDeleted: false };
 
         // Add search condition to both if exists
         if (search) {
@@ -171,7 +173,12 @@ export const getPortfolioItemById = async (req, res) => {
   try {
     const { id } = req.params;
     const item = await prisma.portfolioItem.findUnique({ where: { id: parseInt(id) } });
-    if (!item) return res.status(404).json({ message: "Item not found" });
+    
+    // MODIFIED: Check if item exists AND is not deleted
+    if (!item || item.isDeleted) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
     res.json(item);
   } catch (err) {
     res.status(500).json({ message: "Error fetching item" });
