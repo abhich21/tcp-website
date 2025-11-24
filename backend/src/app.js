@@ -14,6 +14,9 @@ import portfolioRoutes from "./routes/portfolioRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminAuthRoutes from "./admin/routes/authRoutes.js"; // Added for admin authentication
 import portfolioAdminRoutes from "./admin/routes/portfolioAdminRoutes.js";
+import messagesRoutes from "./admin/routes/messagesRoutes.js";
+import auditLogsRoutes from "./admin/routes/auditLogsRoutes.js";
+import statsRoutes from "./admin/routes/statsRoutes.js";
 
 const app = express();
 
@@ -48,6 +51,9 @@ const contactLimiter = rateLimit({
 // --- Routes ---
 app.use("/api/admin", adminAuthRoutes); // Added for admin authentication
 app.use("/api/admin/portfolio", portfolioAdminRoutes);
+app.use("/api/admin/messages", messagesRoutes);
+app.use("/api/admin/audit-logs", auditLogsRoutes);
+app.use("/api/admin/stats", statsRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/portfolio", portfolioRoutes);
 app.use("/api/contact", contactLimiter, contactRoutes); // Apply limiter only to this route
