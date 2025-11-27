@@ -249,7 +249,7 @@ export default function AuditLogsPage() {
             </div>
 
             {/* Modal Content */}
-            <div className="p-6 overflow-y-auto max-h-[calc(80vh-140px)]">
+            <div className="p-2 overflow-y-auto max-h-[calc(80vh-140px)]">
               <div className="grid gap-6 md:grid-cols-2">
                 {/* Before */}
                 <div>
@@ -278,10 +278,10 @@ export default function AuditLogsPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-white/8 flex justify-end">
+            <div className="border-t border-white/8 flex justify-end">
               <Button
                 onClick={() => setSelectedLog(null)}
-                className="bg-violet-500 hover:bg-violet-600 text-white font-[family-name:var(--font-montserrat)]"
+                className="bg-violet-500 hover:bg-violet-600 text-white font-[family-name:var(--font-montserrat)] m-2 "
               >
                 Close
               </Button>

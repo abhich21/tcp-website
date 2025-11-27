@@ -1,5 +1,10 @@
 @reference"tailwindcss";
 
 .navbar {
-  @apply flex items-center justify-between rounded-full bg-white/15 p-2 pl-6 pr-2 backdrop-blur-xl border border-white/20 ;
+  /* Mobile-first: smaller padding */
+  @apply flex items-center justify-between rounded-full bg-white/15 backdrop-blur-xl border border-white/20;
+  @apply p-2 pl-4 pr-2;
+  
+  /* Tablet and up: increase padding */
+  @apply md:p-2 md:pl-6 md:pr-2;
 }

@@ -28,7 +28,13 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  transition: transform 0.15s ease, filter 0.5s ease;
+  /* FIX 1: Remove 'transform' from transition. Only keep filter if you really want it smooth, 
+     but for 3D sync, it's better to let JS handle both. */
+  /* OLD: transition: transform 0.15s ease, filter 0.5s ease; */
+  transition: opacity 0.2s ease; 
+
+  /* FIX 2: Add will-change to optimize mobile GPU usage */
+  will-change: transform, filter;
   pointer-events: none;
   user-select: none;
 }

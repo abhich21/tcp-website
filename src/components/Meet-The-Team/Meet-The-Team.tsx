@@ -30,13 +30,13 @@ const MeetTheTeam = () => {
       <div className={styles.teamGrid}>
   {teamData.map((member, index) => (
     // 1. Use GlassCard as the outer container
-    <GlassCard key={index} className={styles.teamMemberCard}>
+    <GlassCard key={index} className={`${styles.teamMemberCard} overflow-hidden`}>
       {/* 2. Place TiltedCard inside */}
       <TiltedCard
         imageSrc={member.photoUrl}
         altText={member.name}
         captionText={`${member.name} - ${member.title}`} // Tooltip
-        containerHeight="300px" // Give TiltedCard a height
+        containerHeight="var(--card-height)" // Give TiltedCard a height
         imageWidth="100%"
         imageHeight="100%" // Image fills the TiltedCard container
         scaleOnHover={1.05}

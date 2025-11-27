@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -37,17 +37,36 @@ export default function PortfolioPage() {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState<"active" | "archived">("active");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [pagination, setPagination] = useState<PaginationData>({
     total: 0,
     page: 1,
     limit: 9,
     totalPages: 1,
   });
+  
+  // Debounce timer ref
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const fetchItems = async (page = 1) => {
+  const fetchItems = async (params?: { page?: number; search?: string }) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/portfolio?page=${page}&limit=${pagination.limit}`);
+      setError("");
+      
+      const page = params?.page ?? 1;
+      const search = params?.search ?? searchQuery;
+      
+      // Build URL with query parameters
+      const queryParams = new URLSearchParams({
+        page: String(page),
+        limit: String(pagination.limit),
+      });
+      
+      if (search && search.trim()) {
+        queryParams.set("search", search.trim());
+      }
+      
+      const res = await fetch(`/api/admin/portfolio?${queryParams.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch items");
       const data = await res.json();
 
@@ -59,18 +78,46 @@ export default function PortfolioPage() {
       }
     } catch (err) {
       setError("Failed to load portfolio items");
+      console.error("Error fetching portfolio items:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  // Initial fetch on mount
   useEffect(() => {
-    fetchItems(1);
+    fetchItems({ page: 1 });
   }, []);
+  
+  // Debounced search effect
+  useEffect(() => {
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    
+    // Set new timer for debounce (350ms)
+    debounceTimerRef.current = setTimeout(() => {
+      // Reset to page 1 when search changes
+      setPagination(prev => ({ ...prev, page: 1 }));
+      fetchItems({ page: 1, search: searchQuery });
+    }, 350);
+    
+    // Cleanup on unmount or when searchQuery changes
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [searchQuery]);
 
   const handlePageChange = (newPage: number) => {
-    fetchItems(newPage);
+    fetchItems({ page: newPage });
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
   const handleEdit = (id: number) => {
@@ -84,7 +131,7 @@ export default function PortfolioPage() {
         method: "DELETE",
       });
       if (res.ok) {
-        fetchItems(pagination.page);
+        fetchItems({ page: pagination.page });
       } else {
         alert("Failed to delete item");
       }
@@ -100,7 +147,7 @@ export default function PortfolioPage() {
         method: "PUT",
       });
       if (res.ok) {
-        fetchItems(pagination.page);
+        fetchItems({ page: pagination.page });
       } else {
         alert(`Failed to ${action} item`);
       }
@@ -139,6 +186,21 @@ export default function PortfolioPage() {
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
+
+      {/* Search Bar */}
+      <div className="relative w-full">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" aria-hidden="true" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search by title or description..."
+            aria-label="Search portfolio"
+            className="w-full pl-10 pr-4 py-2.5 bg-[#1a1a1d] border border-white/8 rounded-lg text-white placeholder-gray-500 font-[family-name:var(--font-montserrat)] text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/40 focus:border-violet-500/40 transition-all duration-200"
+          />
+        </div>
+      </div>
 
       {/* Tabs and View Toggle */}
       <div className="flex items-center justify-between gap-4 flex-wrap">

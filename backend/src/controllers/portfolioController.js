@@ -6,6 +6,8 @@ const prisma = new PrismaClient();
 
 // ➕ Create Portfolio Item
 export const createPortfolioItem = async (req, res) => {
+  console.log("🟥 portfolioController.js → createPortfolioItem HIT");
+
   try {
     const { title, category_id, category_name, description, type, url } = req.body;
 
@@ -20,6 +22,9 @@ export const createPortfolioItem = async (req, res) => {
 
     // Handle based on type
     if (type === "youtube" || type === "vimeo") {
+      if (!url) {
+        return res.status(400).json({ message: "Video URL is required for video items" });
+      }
       details = [{ type, url }];
     } else if (type === "pdf") {
       if (!req.files.file || !req.files.file[0]) {
@@ -187,6 +192,8 @@ export const getPortfolioItemById = async (req, res) => {
 
 // ✏️ Update Portfolio Item
 export const updatePortfolioItem = async (req, res) => {
+  console.log("🟥 portfolioController.js → updatePortfolioItem HIT");
+
   try {
     const { id } = req.params;
     const { title, category_id, category_name, description, type, url } = req.body;
@@ -205,6 +212,9 @@ export const updatePortfolioItem = async (req, res) => {
 
     // ✅ Handle details replacements
     if (type === "youtube" || type === "vimeo") {
+      if (!url) {
+        return res.status(400).json({ message: "Video URL is required for video items" });
+      }
       details = [{ type, url }];
     } else if (type === "pdf" && req.files.file?.[0]) {
       if (existing.details?.[0]?.url) await deleteFromS3(existing.details[0].url);

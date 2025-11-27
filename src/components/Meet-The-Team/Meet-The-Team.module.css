@@ -6,7 +6,7 @@
 }
 
 .title {
-  @apply text-center text-4xl font-bold font-[montserrat] mb-16;
+  @apply text-center text-2xl md:text-4xl font-semibold font-[montserrat] tracking-widest text-gray-300 mb-16;
 }
 
 .teamGrid {
@@ -52,7 +52,6 @@
   }
 }
 
-/* Mobile Styles (Screens up to 768px) */
 @media (max-width: 768px) {
   .section {
     @apply py-12 px-2;
@@ -61,16 +60,35 @@
     @apply text-2xl mb-10;
   }
   .teamGrid {
-    /* Set grid columns and gap */
-    @apply grid grid-cols-2 gap-4; 
-    /* --- ADD THIS --- */
-    /* Set the height of automatically generated rows */
-    @apply auto-rows-[15rem]; 
+    @apply grid grid-cols-2 gap-4;
+    /* FIX: Changed from fixed '15rem' to 'auto' so it fits the 300px card + text */
+    @apply auto-rows-auto; 
   }
   .memberName {
     @apply text-base;
   }
   .memberTitle {
     @apply text-xs;
+  }
+  .teamMemberCard {
+  @apply p-4 flex flex-col rounded-2xl;
+  
+}
+}
+
+.teamMemberCard {
+  @apply p-4 flex flex-col rounded-2xl;
+  
+  /* 1. Define the Mobile Height (Default) */
+  --card-height: 200px; 
+}
+
+/* ... existing styles ... */
+
+/* Tablet/Desktop Styles (Screens 768px and up) */
+@media (min-width: 768px) {
+  .teamMemberCard {
+    /* 2. Override with Desktop Height */
+    --card-height: 300px;
   }
 }

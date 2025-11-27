@@ -26,7 +26,7 @@
   @apply text-center text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-6;
   font-family: var(--font-montserrat);
   position: sticky !important;
-  top: 20vh;
+  top: 18vh;
 }
 
 .cardContent {

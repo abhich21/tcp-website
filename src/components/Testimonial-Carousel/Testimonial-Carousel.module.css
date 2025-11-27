@@ -62,26 +62,75 @@
   overflow-wrap: break-word; /* Fix for long designations */
 }
 
-/* --- NAVIGATION BUTTONS (The Simple Fix) --- */
+/* --- NAVIGATION BUTTONS - Touch-Friendly --- */
 
 .navButton {
   /* Standard setup: absolute, vertically centered */
-  @apply absolute z-10 p-1 md:p-3 lg:p-3 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm transition-colors duration-200;
+  @apply absolute z-10 rounded-full bg-black/20 hover:bg-black/40 backdrop-blur-sm transition-colors duration-200;
   top: 50%;
   transform: translateY(-50%);
+  /* Mobile: 44px minimum touch target */
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tablet and up: larger padding */
+@media (min-width: 768px) {
+  .navButton {
+    padding: 12px;
+    min-width: 48px;
+    min-height: 48px;
+  }
 }
 
 .prevButton {
-  /* Positioned simply from the left edge of the .container */
-  @apply left-[-2] md:left-4 lg:left-8;
+  /* Positioned from the left edge of the .container */
+  left: 0;
+}
+
+@media (min-width: 768px) {
+  .prevButton {
+    left: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .prevButton {
+    left: 2rem;
+  }
 }
 
 .nextButton {
-  /* Positioned simply from the right edge of the .container */
-  @apply right-[-2] md:right-4 lg:right-8;
+  /* Positioned from the right edge of the .container */
+  right: 0;
+}
+
+@media (min-width: 768px) {
+  .nextButton {
+    right: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nextButton {
+    right: 2rem;
+  }
 }
 
 .navIcon {
-  /* Mobile-first icon size */
-  @apply h-5 w-5 md:h-6 md:w-6 text-gray-300;
+  /* Mobile-first icon size - larger for better visibility */
+  width: 24px;
+  height: 24px;
+  @apply text-gray-300;
+}
+
+@media (min-width: 768px) {
+  .navIcon {
+    width: 28px;
+    height: 28px;
+  }
 }

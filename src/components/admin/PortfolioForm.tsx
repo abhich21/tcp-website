@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,15 +15,24 @@ interface PortfolioFormProps {
   isEditing?: boolean;
 }
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 export function PortfolioForm({ initialData, isEditing = false }: PortfolioFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
+  // Categories State
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+
   // Form State
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(initialData?.description || "");
-  const [categoryId, setCategoryId] = useState(initialData?.category_id || "");
+  const [categoryId, setCategoryId] = useState(initialData?.category_id?.toString() || "");
   const [type, setType] = useState(initialData?.details?.[0]?.type || "image");
   const [videoUrl, setVideoUrl] = useState(initialData?.details?.[0]?.url || "");
   
@@ -38,6 +47,24 @@ export function PortfolioForm({ initialData, isEditing = false }: PortfolioFormP
     const details = Array.isArray(initialData.details) ? initialData.details : [];
     return details.filter((d: any) => d.type === 'image') || [];
   });
+
+  // Fetch Categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/admin/categories");
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(data);
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -58,7 +85,7 @@ export function PortfolioForm({ initialData, isEditing = false }: PortfolioFormP
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("category_id", categoryId.toString());
+      formData.append("category_id", categoryId);
       formData.append("type", type);
 
       if (type === "image") {
@@ -127,19 +154,22 @@ export function PortfolioForm({ initialData, isEditing = false }: PortfolioFormP
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="category" className="text-gray-300 font-[family-name:var(--font-montserrat)]">Category ID</Label>
-            <Input
+            <Label htmlFor="category" className="text-gray-300 font-[family-name:var(--font-montserrat)]">Category</Label>
+            <select
               id="category"
-              type="number"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
               required
-              placeholder="e.g. 1"
-              className="bg-[#1a1a1d] border-white/8 text-white placeholder:text-gray-500 focus:border-violet-500"
-            />
-            <p className="text-xs text-gray-500 font-[family-name:var(--font-montserrat)]">
-              (Temporary: Enter ID manually until category fetch is implemented)
-            </p>
+              className="flex h-10 w-full rounded-md border border-white/8 bg-[#1a1a1d] text-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e0e10]"
+              disabled={loadingCategories}
+            >
+              <option value="" disabled>Select a category</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="grid gap-2">

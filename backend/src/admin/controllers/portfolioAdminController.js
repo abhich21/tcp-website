@@ -7,6 +7,8 @@ const prisma = new PrismaClient();
 // --- CRUD OPERATIONS ---
 
 export const createPortfolioItemAdmin = async (req, res) => {
+  console.log("🟦 portfolioAdminController.js → createPortfolioItem HIT");
+
   try {
     const { title, description, category_id, type, url } = req.body;
     const adminUser = req.admin ? req.admin.username : 'unknown_admin';
@@ -129,6 +131,8 @@ export const getPortfolioItemByIdAdmin = async (req, res) => {
 };
 
 export const updatePortfolioItemAdmin = async (req, res) => {
+  console.log("🟦 portfolioAdminController.js → updatePortfolioItem HIT");
+
   try {
     const { id } = req.params;
     const { title, description, category_id, type, url, existing_files } = req.body;
@@ -167,7 +171,6 @@ export const updatePortfolioItemAdmin = async (req, res) => {
     }
 
     // 3. Handle Details (Gallery/Video) Update
-    // Logic: Merge existing kept files with new uploaded files
     let newDetails = existingItem.details || [];
     
     if (type) {
@@ -207,15 +210,12 @@ export const updatePortfolioItemAdmin = async (req, res) => {
 
       } else if (['pdf', 'youtube', 'vimeo'].includes(type)) {
         // For non-image types, we replace the details entirely
-        // First, clean up old images if switching from image type
-        if (Array.isArray(existingItem.details)) {
-          for (const detail of existingItem.details) {
-            if (detail.type === 'image' && detail.url) {
-              await deleteFromS3(detail.url);
-            }
-          }
-        }
         
+        // Validate Video URL
+        if (['youtube', 'vimeo'].includes(type) && !url) {
+          return res.status(400).json({ message: 'Video URL is required' });
+        }
+
         if (url) {
           newDetails = [{ type, url }];
         }

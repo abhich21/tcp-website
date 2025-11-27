@@ -29,9 +29,8 @@ const navItems = [
   },
   {
     title: "Categories",
-    href: "#",
+    href: "/admin/categories",
     icon: FolderTree,
-    disabled: true,
   },
   {
     title: "Contact Messages",
