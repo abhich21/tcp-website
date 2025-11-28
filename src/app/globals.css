@@ -152,4 +152,40 @@ body::before {
 }
 
 
+.gradient-animate {
+  background: linear-gradient(
+    90deg,
+    #a78bfa,
+    #d4fc79,
+    #22c55e,
+    #d4fc79,
+    #a78bfa
+  );
+
+  background-size: 200% 200%; /* bigger movement area */
+  animation: gradientFlow 10s linear infinite;
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 220% 50%; /* long travel path */
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+
+
 

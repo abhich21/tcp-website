@@ -3,16 +3,17 @@ import fs from 'fs';
 import path from 'path';
 // 1. Import Components
 import Hero from "@/components/Hero/Hero"; 
+import Hero2 from "@/components/Hero/Hero2";
 import Services from "@/components/Services/Services";
 import ShowReel from "@/components/ShowReel/ShowReels";
 import PortfolioSection from "@/components/portfolio-section/PortfolioSection";
 import ServicesMarquee from "@/components/Services/ServicesMarquee";
 import PartnersSection from "@/components/partners-section/PartnersSection";
 import { LogoItem } from '@/components/ui/LogoLoop';
-import { TestimonialCarousel } from '@/components/Testimonial-Carousel/Testimonial-Carousel'; // NEW IMPORT
+import { TestimonialCarousel } from '@/components/Testimonial-Carousel/Testimonial-Carousel';
 import { testimonials } from '@/data/testimonials';
 import GlassCard from '@/components/ui/GlassCard/GlassCard';
-import MeetTheTeam from '@/components/Meet-The-Team/Meet-The-Team'; // 1. Import
+import MeetTheTeam from '@/components/Meet-The-Team/Meet-The-Team';
 import FaqSection from '@/components/FAQ/FaqSection';
 import Footer from '@/components/Footer/Footer';
 import ContactForm from '@/components/Contact-us/ContactStepper';
@@ -34,9 +35,10 @@ export default function Home() {
 
   return (
     <main>
+      <Hero2 />
       <ShowReel />
-      <Hero /> {/* 2. Add the Hero component here */}
-      <PortfolioSection /> {/* 2. Add the new section */}
+      <Hero />
+      <PortfolioSection />
       <PartnersSection logos={partnerLogos} />
       <section className="w-full h-auto py-10 px-4">
         <h2 className="text-center text-2xl md:text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-10">
@@ -56,9 +58,9 @@ export default function Home() {
       <ServicesMarquee /> 
 
       
-      <section id="about">
+      {/* <section id="about">
         <MeetTheTeam/>
-      </section>
+      </section> */}
 
       <section id="faq">
         <FaqSection/>

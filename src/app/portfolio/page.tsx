@@ -147,15 +147,15 @@ const FilterBar: React.FC<FilterBarProps> = React.memo(({
   // --- END NEW ---
 
   return (
-    <div className="w-full max-w-7xl px-4 lg:px-0 mx-auto mb-12">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-around gap-4 mb-6">
+    <div className="w-full max-w-7xl px-4 lg:px-0 mx-auto mb-8 sm:mb-12">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-around gap-3 sm:gap-4 mb-4 sm:mb-6">
         <GlassCard className="flex w-full sm:w-2/3 lg:w-2/3 rounded-lg overflow-hidden shadow-xl">
           <input
             type="text"
             placeholder="Search by name"
             value={searchTermInput}
             onChange={handleInputChange}
-            className="flex-grow p-3 bg-transparent border-0 text-gray-200 rounded-lg placeholder-gray-500 transition duration-150"
+            className="flex-grow p-2.5 sm:p-3 bg-transparent border-0 text-sm sm:text-base text-gray-200 rounded-lg placeholder-gray-500 transition duration-150"
           />
         </GlassCard>
 
@@ -185,7 +185,7 @@ const FilterBar: React.FC<FilterBarProps> = React.memo(({
             <div className="relative">
               {/* Use GlassCard for the button */}
               <GlassCard className="rounded-lg shadow-xl overflow-hidden">
-                <Listbox.Button className="relative w-full cursor-pointer py-3 px-4 pr-10 text-left text-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00A859] focus-visible:ring-opacity-75">
+                <Listbox.Button className="relative w-full cursor-pointer py-2.5 sm:py-3 px-3 sm:px-4 pr-10 text-left text-sm sm:text-base text-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00A859] focus-visible:ring-opacity-75">
                   <span className="block truncate">{selectedOption.name}</span>
                   <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     <ChevronsUpDown
@@ -243,8 +243,8 @@ const FilterBar: React.FC<FilterBarProps> = React.memo(({
         {/* --- MODIFICATION END --- */}
       </div>
 
-      <GlassCard className="rounded-xl shadow-2xl p-6">
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+      <GlassCard className="rounded-xl shadow-2xl p-4 sm:p-6">
+        <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 md:gap-3">
           {isLoadingCategories ? (
             // simple skeleton while loading
             <div className="h-8 w-full flex items-center justify-center text-gray-500">Loading categories...</div>
@@ -254,7 +254,7 @@ const FilterBar: React.FC<FilterBarProps> = React.memo(({
                 key={cat.id}
                 onClick={() => setActiveCategoryId(cat.id === 1 ? 1 : cat.id)} // id=1 == All (backend convention)
                 className={`
-                  px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
+                  px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium rounded-full transition-all duration-200 whitespace-nowrap
                   ${activeCategoryId === cat.id
                     ? 'bg-[#00A859] text-white shadow-lg shadow-[#00A859]/50 transform scale-105'
                     : 'text-gray-300 hover:bg-[#00A859] hover:text-white hover:shadow-md hover:scale-105 border border-gray-700'
@@ -491,11 +491,11 @@ export default function PortfolioPage() {
      Render
      ------------------------- */
   return (
-    <main className="pt-20 min-h-screen flex flex-col items-center px-4 relative text-white font-inter">
-      <section className="mb-8 p-4 pt-12">
+    <main className="pt-16 sm:pt-20 min-h-screen flex flex-col items-center px-4 relative text-white font-inter">
+      <section className="mb-6 sm:mb-8 p-4 pt-8 sm:pt-12">
         <AnimatedText
           text="PORTFOLIO"
-          className="!text-5xl sm:!text-7xl md:!text-8xl !text-center !font-bold !text-white tracking-widest"
+          className="!text-4xl sm:!text-5xl md:!text-7xl lg:!text-8xl !text-center !font-bold !text-white tracking-widest"
         />
       </section>
 
@@ -518,7 +518,7 @@ export default function PortfolioPage() {
         )}
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {/* If items empty while loading, show nothing (or you can show placeholders) */}
           {items.length === 0 && isLoading ? (
             // show mock placeholders (use the original MOCK to preserve look)
