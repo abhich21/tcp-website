@@ -1,14 +1,25 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import GlassCard from "../ui/GlassCard/GlassCard";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 
+// Import SplashCursor as client-only to avoid hydration issues
+// (it uses Date.now() and Math.random() which differ between server and client)
+const SplashCursor = dynamic(() => import("../ui/SplashCursor"), {
+  ssr: false,
+});
 
 export default function Hero2() {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const containerVariants = {
   hidden: { opacity: 0 },
@@ -89,6 +100,18 @@ const cardVariants = {
       ref={containerRef}
       className="relative w-full min-h-screen flex items-center justify-center px-6 pt-10 pb-10"
     >
+      {/* SplashCursor Background Effect */}
+      <div className="absolute inset-0 z-0">
+        {isMounted && (
+          <SplashCursor
+            TRANSPARENT={true}
+            BACK_COLOR={{ r: 0, g: 0, b: 0 }}
+            SPLAT_RADIUS={0.25}
+            MOVEMENT_THRESHOLD={0.008}
+          />
+        )}
+      </div>
+
       <div className="relative z-10 w-full max-w-7xl mx-auto">
 
         {/* Titles */}
