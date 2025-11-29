@@ -1,18 +1,12 @@
 {
   "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/api/index.js"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
-    }
-  ],
-  "installCommand": "cd backend && npm ci && npx prisma generate",
+  "installCommand": "cd backend && npm ci --only=production && npx prisma generate",
   "buildCommand": "echo 'Backend only - no build needed'",
-  "outputDirectory": "api"
+  "framework": null
 }
