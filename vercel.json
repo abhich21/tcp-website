@@ -2,15 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/package.json",
+      "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
         "includeFiles": ["backend/**"]
       }
-    },
-    {
-      "src": "api/index.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -18,10 +14,5 @@
       "src": "/(.*)",
       "dest": "/api/index.js"
     }
-  ],
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "backend/**"
-    }
-  }
+  ]
 }
