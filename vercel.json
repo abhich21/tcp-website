@@ -12,7 +12,7 @@
     }
   },
   "installCommand": "cd backend && npm ci --only=production && npx prisma generate",
-  "buildCommand": "mkdir -p dist",
+  "buildCommand": "mkdir -p dist && echo 'API Running' > dist/index.txt",
   "outputDirectory": "dist",
   "framework": null
 }
