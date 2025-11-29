@@ -1,16 +1,10 @@
-# Ignore frontend
+# Ignore frontend Next.js files
 .next
-src/
-public/
-components.json
-next.config.ts
-tsconfig.json
-tailwind.config.ts
-postcss.config.mjs
-eslint.config.mjs
-# Ignore root node_modules
-node_modules
-# CRITICAL: Do NOT ignore backend/node_modules here if we rely on includeFiles
-# But to save space, we ignore the cache and other junk
-backend/node_modules/.cache
-backend/.turbo
+/src/
+/public/
+/components.json
+/next.config.ts
+/tsconfig.json
+/tailwind.config.ts
+/postcss.config.mjs
+/eslint.config.mjs
