@@ -1,3 +1,9 @@
 {
-  "buildCommand": "cd backend && npm ci && npx prisma generate"
+  "version": 2,
+  "installCommand": "npm install && cd backend && npm ci && npx prisma generate",
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
 }
