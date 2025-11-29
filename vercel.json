@@ -6,8 +6,13 @@
       "destination": "/api/index.js"
     }
   ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "backend/**"
+    }
+  },
   "installCommand": "cd backend && npm ci --only=production && npx prisma generate",
-  "buildCommand": "mkdir -p dist && echo 'Backend Online' > dist/index.html",
+  "buildCommand": "mkdir -p dist",
   "outputDirectory": "dist",
   "framework": null
 }
