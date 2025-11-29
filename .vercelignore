@@ -1,3 +1,11 @@
 node_modules
 .next
 backend/node_modules
+src/
+public/
+components.json
+next.config.ts
+tsconfig.json
+tailwind.config.ts
+postcss.config.mjs
+eslint.config.mjs
