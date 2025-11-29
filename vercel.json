@@ -1,5 +1,3 @@
 {
-  "version": 2,
-  "buildCommand": "cd backend && npm ci && npx prisma generate",
-  "installCommand": "npm install"
+  "buildCommand": "cd backend && npm ci && npx prisma generate"
 }
