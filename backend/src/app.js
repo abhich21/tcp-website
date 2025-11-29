@@ -47,6 +47,18 @@ const contactLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'TCP Backend',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      admin: 'POST /api/admin'
+    }
+  });
+});
+
 // --- Routes ---
 app.use("/api/admin", adminAuthRoutes);
 app.use("/api/admin/portfolio", portfolioAdminRoutes);
