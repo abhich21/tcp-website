@@ -8,13 +8,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": [
-        "backend/src/**",
-        "backend/package.json",
-        "backend/prisma/schema.prisma",
-        "backend/node_modules/.prisma/**",
-        "backend/node_modules/@prisma/**"
-      ]
+      "includeFiles": "backend/**"
     }
   },
   "installCommand": "cd backend && npm ci --only=production && npx prisma generate",

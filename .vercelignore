@@ -1,6 +1,5 @@
-node_modules
+# Ignore frontend
 .next
-backend/node_modules
 src/
 public/
 components.json
@@ -9,3 +8,9 @@ tsconfig.json
 tailwind.config.ts
 postcss.config.mjs
 eslint.config.mjs
+# Ignore root node_modules
+node_modules
+# CRITICAL: Do NOT ignore backend/node_modules here if we rely on includeFiles
+# But to save space, we ignore the cache and other junk
+backend/node_modules/.cache
+backend/.turbo
