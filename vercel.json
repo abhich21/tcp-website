@@ -1,6 +1,15 @@
 {
-  "buildCommand": "cd backend && npm install && npx prisma generate",
-  "installCommand": "npm install",
-  "framework": null,
-  "outputDirectory": "api"
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.js"
+    }
+  ]
 }
