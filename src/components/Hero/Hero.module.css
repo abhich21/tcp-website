@@ -1,0 +1,82 @@
+@reference"tailwindcss";
+
+.title {
+  position: relative;
+  /* Base styles */
+  /* REMOVED text-3xl, it's now in Hero.tsx */
+  @apply font-bold max-w-4xl leading-tight tracking-tight mb-4;
+}
+
+.animatedText {
+  @apply font-[montserrat] leading-tight tracking-wide;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: light-trace 5s linear infinite;
+}
+
+@keyframes light-trace {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* === Mobile-First Responsive Styles === */
+
+/* Base (Mobile) Styles */
+.carouselCard {
+  position: relative;
+  width: 100%;
+  max-width: 99%; /* Mobile max-width */
+  margin-top: 1rem;
+  padding: 0.5rem; /* Mobile padding */
+  padding-bottom: 3rem; /* Mobile bottom padding */
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(50px);
+}
+
+.carouselCard :global(.embla__dots) {
+  bottom: 0.75rem; /* Mobile dot position */
+}
+
+
+/* Tablet Styles (md: 768px and up) */
+@media (min-width: 768px) {
+  .carouselCard {
+    max-width: 85%; /* Tablet max-width */
+    padding: 1.5rem; /* Tablet padding */
+     /* padding-bottom: 4rem; (No change from mobile, so no need to repeat) */
+     padding-bottom: 3rem;  
+  }
+  
+  .carouselCard :global(.embla__dots) {
+    bottom: 1rem; /* Tablet dot position */
+  }
+}
+
+/* Desktop Styles (lg: 1024px and up) */
+@media (min-width: 1024px) {
+  .carouselCard {
+    max-width: 75%; /* Desktop max-width */
+    padding: 2rem; /* Desktop padding */
+    padding-bottom: 3rem; /* Desktop bottom padding */
+  }
+  
+  /* No change for dots from tablet, so we don't need to add it */
+}

@@ -1,0 +1,91 @@
+/* src/components/ui/Stepper-form/Stepper.module.css */
+@reference "tailwindcss";
+
+.outerContainer { /* Renamed */
+  @apply flex w-full flex-col items-center justify-center ;
+}
+
+.stepCircleContainer { /* Renamed */
+  @apply mx-auto w-full max-w-2xl rounded-2xl;
+}
+
+.stepIndicatorRow { /* Renamed */
+  @apply flex w-full items-center py-4 px-8;
+}
+
+.stepContentDefault { /* Renamed */
+  @apply relative overflow-hidden;
+}
+
+.stepDefault { /* Renamed */
+  @apply px-8 pb-4;
+}
+
+.footerContainer { /* Renamed */
+  @apply px-8 pb-4;
+}
+
+.footerNav { /* Renamed */
+  @apply  flex;
+}
+
+.footerNav.spread {
+  @apply justify-between;
+}
+
+.footerNav.end {
+  @apply justify-end;
+}
+
+.backButton { /* Renamed */
+  @apply rounded px-3 py-1 text-gray-400 transition-all duration-350 ease-in-out;
+  @apply hover:text-white;
+}
+
+.backButton.inactive {
+  @apply pointer-events-none text-gray-400 opacity-50;
+}
+
+.nextButton { /* Renamed */
+  @apply px-5 py-2 text-base font-medium;
+}
+
+.stepIndicator { /* Renamed */
+  @apply relative cursor-pointer outline-none;
+}
+
+.stepIndicatorInner { /* Renamed */
+  @apply flex h-8 w-8 items-center justify-center rounded-full font-semibold;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #a3a3a3;
+}
+
+/* Style Overrides */
+.stepIndicatorInner[style*="rgb(82, 39, 255)"] {
+  @apply bg-lime-400 text-black;
+}
+
+.activeDot { /* Renamed */
+  @apply h-3 w-3 rounded-full bg-black;
+}
+
+.stepIndicatorInner[style*="rgb(59, 130, 246)"] {
+  @apply bg-lime-400 text-white;
+}
+
+.stepNumber { /* Renamed */
+  @apply text-sm;
+}
+
+.stepConnector { /* Renamed */
+  @apply relative mx-2 h-0.5 flex-1 overflow-hidden rounded-md bg-white/20;
+}
+
+.stepConnectorInner { /* Renamed */
+  @apply absolute left-0 top-0 h-full;
+  background-color: #a3e635 !important;
+}
+
+.checkIcon { /* Renamed */
+  @apply h-4 w-4 text-white;
+}

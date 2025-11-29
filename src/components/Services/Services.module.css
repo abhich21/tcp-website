@@ -1,0 +1,98 @@
+@reference "tailwindcss";
+
+.cardContainer {
+  max-width: 60%;
+  margin-inline: auto;
+}
+
+.scrollTrack {
+  height: 200vh;
+  position: relative;
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+.section {
+  @apply w-full py-5 px-4;
+  isolation: isolate;
+}
+
+.title {
+  @apply text-center text-4xl font-semibold font-[montserrat]  tracking-widest text-gray-300 mb-6;
+  font-family: var(--font-montserrat);
+  position: sticky !important;
+  top: 18vh;
+}
+
+.cardContent {
+  @apply flex flex-col items-start text-left p-2;
+}
+
+.cardIcon {
+  /* --- MODIFICATION: Removed mb-6 --- */
+  @apply w-16 h-16 bg-lime-200/10 rounded-xl flex items-center justify-center text-lime-300;
+}
+
+.cardTitle {
+  @apply text-2xl font-bold mb-3;
+  font-family: var(--font-montserrat);
+}
+
+.cardDescription {
+  @apply text-gray-300 text-base leading-relaxed;
+}
+
+.scroll-stack-card {
+  margin-bottom: 20rem; /* Adjust this value as needed */
+}
+
+/* === Responsive Styles === */
+
+/* Tablet Styles */
+@media (max-width: 1024px) {
+  .cardContainer {
+    max-width: 80%; /* Widen the card container for tablets */
+  }
+
+  .title {
+    @apply text-3xl; /* Slightly smaller title */
+  }
+
+  .cardTitle {
+    @apply text-xl; /* Slightly smaller card titles */
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .cardContainer {
+    max-width: 90%; /* Use more of the screen width on mobile */
+  }
+
+  .scroll-stack-card {
+    margin-bottom: 15rem; /* Reduce scroll distance between cards */
+  }
+
+  .title {
+    @apply text-2xl; /* Smaller title for mobile */
+    top: 15vh; /* Position the sticky title a bit higher */
+  }
+
+  .cardIcon {
+    @apply w-12 h-12; /* Smaller icon */
+    /* mb-4 was here, but it's removed from the base class */
+  }
+
+  .cardTitle {
+    @apply text-lg; /* Smaller card titles for mobile */
+  }
+
+  .cardDescription {
+    @apply text-sm; /* Smaller description text */
+  }
+}

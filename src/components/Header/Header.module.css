@@ -1,0 +1,54 @@
+@reference "tailwindcss";
+
+.navbar {
+  @apply flex items-center justify-between rounded-full 
+         bg-white/15 backdrop-blur-xl border border-white/20 
+         p-2 pl-4 pr-2 md:p-2 md:pl-6 md:pr-2;
+
+  /* FIX: allow mega menu to render blur outside */
+  overflow: visible;
+}
+
+.mobileMenu {
+  @apply fixed left-0 right-0 mx-4 mt-2 rounded-3xl
+         bg-white/15 backdrop-blur-xl border border-white/20
+         shadow-2xl overflow-hidden;
+  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top;
+  z-index: 70;
+}
+
+.mobileMenuOpen {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  max-height: 500px;
+}
+
+.mobileMenuClosed {
+  opacity: 0;
+  transform: translateY(-20px) scaleY(0.95);
+  max-height: 0;
+  pointer-events: none;
+}
+
+.mobileNavList {
+  @apply flex flex-col p-4 gap-1;
+}
+
+.mobileNavLink {
+  @apply block px-4 py-3 rounded-xl text-gray-100 
+         hover:text-white hover:bg-white/10 
+         transition-all duration-200;
+  
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.mobileNavLink:active {
+  @apply bg-white/20;
+}
+
+.mobileButtonWrapper {
+  @apply px-4 pb-4 pt-2;
+}

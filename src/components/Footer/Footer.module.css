@@ -1,0 +1,68 @@
+@reference "tailwindcss";
+
+.footer {
+  @apply w-full bg-black text-gray-400 font-[montserrat];
+}
+
+/* === Top Section === */
+.mainFooter {
+  @apply max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 py-16 px-6;
+}
+
+/* 1. Logo Section */
+.logoSection {
+  @apply flex items-start;
+}
+.logoCardContainer {
+  
+  @apply !p-4 !flex-none; 
+}
+.logo {
+  @apply h-10 w-auto; /* Adjust height as needed */
+}
+
+/* 2. Navigation Section */
+.navSection {
+  /* On mobile, add top margin */
+  @apply mt-6 md:mt-0;
+}
+.title {
+  @apply text-white font-semibold mb-4 tracking-wider text-sm;
+}
+.nav {
+  @apply flex flex-col gap-3;
+}
+.navLink {
+  @apply text-gray-400 hover:text-white transition-colors duration-200;
+}
+
+/* 3. Social Section */
+.socialSection {
+  /* On mobile, add top margin */
+  @apply mt-6 md:mt-0;
+}
+.socialIcons {
+  @apply flex gap-3 items-center;
+}
+.socialCardContainer {
+  /* Override 3D card's default padding and centering */
+  @apply !p-4 !flex-none;
+}
+.socialIconLink {
+  @apply text-gray-400 hover:text-white transition-colors duration-200 block p-2;
+  /* Add padding to make the 3D target bigger */
+}
+.socialIconSvg {
+  @apply w-5 h-5;
+}
+
+/* === Bottom Section === */
+.subFooter {
+  @apply max-w-6xl mx-auto flex flex-col-reverse md:flex-row justify-between items-center gap-4 py-6 px-6 border-t border-gray-800 text-sm;
+}
+.copyright {
+  @apply text-gray-500;
+}
+.termsLink {
+  @apply hover:text-white transition-colors duration-200;
+}

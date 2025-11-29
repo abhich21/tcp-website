@@ -1,0 +1,160 @@
+/* tumul901/tcp-website/tcp-website-d66ffaf1bb64fc577ab80a112ef9305a0440dc75/src/components/Contact-us/ContactStepper.module.css */
+@reference "tailwindcss";
+
+.section {
+  @apply w-full max-w-2xl mx-auto py-20 px-4;
+}
+
+.title {
+  @apply text-center text-2xl md:text-4xl font-semibold font-[montserrat] tracking-widest text-gray-300 mb-4;
+}
+
+/* --- Content inside a step --- */
+.stepContent {
+  @apply flex flex-col gap-6;
+  min-height: 350px; /* Gives the form a consistent height */
+}
+
+.stepTitle {
+  @apply text-2xl font-semibold text-white;
+}
+
+.stepDescription {
+  @apply text-base text-gray-400 -mt-4;
+}
+
+.summary {
+  @apply p-4 rounded-lg bg-black/30 border border-white/10 text-gray-300;
+}
+
+/* --- Form Input Styles --- */
+.inputGroup {
+  @apply flex flex-col gap-4;
+}
+
+.label {
+  @apply text-sm font-medium text-gray-300;
+}
+
+.inputField {
+  @apply w-full p-3 rounded-lg border text-white;
+  @apply bg-black/30 border-white/10;
+  @apply placeholder-gray-500;
+  @apply focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400;
+  transition: all 0.2s ease-in-out;
+}
+
+.inputField option {
+  @apply bg-[#0D0D0D] text-white;
+}
+
+.textareaField {
+  @apply w-full p-3 rounded-lg border text-white resize-none;
+  @apply bg-black/30 border-white/10;
+  @apply placeholder-gray-500;
+  @apply focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400;
+  transition: all 0.2s ease-in-out;
+}
+
+/* --- Error and Shake Animation --- */
+
+.errorInput {
+  @apply border-red-500;
+  @apply focus:ring-red-500 focus:border-red-500;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* --- NEW Success Screen Styles --- */
+
+.successCard {
+  @apply flex flex-col items-center justify-center p-8 md:p-12;
+  min-height: 480px; /* Match stepper min-height + footer */
+  animation: fadeInScale 1.5s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.checkmarkContainer {
+  @apply mb-4;
+}
+
+.checkmark {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 3;
+  stroke: #a3e635; /* lime-400 */
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #a3e635;
+  animation: bounce 0.4s ease-out 0.8s forwards;
+}
+
+.checkmarkCircle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: rgba(163, 230, 53, 0.3); /* Lighter lime */
+  fill: none;
+  animation: drawCheck 0.7s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmarkPath {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: drawCheck 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.successButton {
+  @apply mt-6 px-6 py-2 bg-green-800 text-white rounded-full font-semibold;
+  @apply hover:bg-green-800 transition-colors duration-200;
+}

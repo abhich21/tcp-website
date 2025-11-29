@@ -1,0 +1,41 @@
+@reference "tailwindcss";
+
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  @apply text-center text-2xl md:text-4xl font-semibold font-[montserrat] tracking-widest text-gray-300;
+}
+
+.card {
+  /* KEY FIX: REMOVED 'overflow-hidden' from here.
+  */
+  @apply relative rounded-3xl;
+  box-shadow: 0 0 40px rgba(100, 100, 255, 0.1);
+  height: auto;
+}
+
+.videoContainer {
+  /* This creates the 16:9 aspect ratio box */
+  @apply relative w-full;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+
+  /* KEY FIX: MOVED 'overflow-hidden' HERE.
+    We also add rounded corners to clip the video itself, 
+    matching the card.
+  */
+  @apply overflow-hidden rounded-2xl; 
+  /* (Use rounded-2xl so it looks good inside the card's padding) */
+}
+
+.reactPlayer {
+  /* KEY FIX: We move all sizing and border styles here
+    from the .tsx file's inline style.
+  */
+  @apply absolute top-0 left-0 w-full h-full;
+  border: none;
+}

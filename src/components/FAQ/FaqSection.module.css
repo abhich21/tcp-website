@@ -1,0 +1,66 @@
+@reference "tailwindcss";
+
+.section {
+  @apply w-full py-20 px-4 font-[montserrat];
+}
+
+.gridContainer {
+  @apply max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start;
+}
+
+/* === Left Title Column === */
+.titleWrapper {
+  @apply md:sticky md:top-28;
+}
+
+.titleLabel {
+  @apply text-lime-400 font-semibold mb-2;
+}
+
+.titleHeading {
+  @apply text-2xl md:text-4xl font-semibold font-[montserrat] tracking-widest text-gray-300 leading-tight;
+}
+
+/* === Right Accordion Column === */
+.accordionWrapper {
+  @apply md:col-span-2;
+}
+
+.faqCard {
+  @apply rounded-2xl overflow-hidden;
+}
+
+.accordionItem {
+  @apply border-b border-white/10 last:border-b-0;
+}
+
+.faqButton {
+  @apply w-full flex justify-between items-center text-left p-6 md:p-8;
+}
+
+.faqQuestion {
+  @apply text-gray-200 text-sm md:text-lg pr-4;
+}
+
+.faqIcon {
+  @apply text-3xl text-gray-300 transition-transform duration-500 ease-in-out;
+}
+
+/* === Dynamic Classes for Animation (SNAPPY MAX-HEIGHT) === */
+.faqAnswerContainer {
+  /* CHANGED: 'transition-all' is now 'transition-[max-height]' */
+  @apply overflow-hidden transition-all duration-500 ease-in-out;
+}
+
+.answerOpen {
+  /* CHANGED: 'max-h-96' (384px) is now 'max-h-72' (288px) */
+  @apply max-h-72; 
+}
+
+.answerClosed {
+  @apply max-h-0; 
+}
+
+.faqAnswer {
+  @apply text-gray-400 pb-6 px-6 md:px-8 pr-12;
+}
