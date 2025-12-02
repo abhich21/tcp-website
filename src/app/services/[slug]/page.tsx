@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { services } from '@/data/services'; // 1. Import the new service data
 import GlassCard from '@/components/ui/GlassCard/GlassCard'; // 2. Import GlassCard
 import ShineButton from '@/components/ui/ShineButton'; // 3. Import ShineButton for CTA
+import ServiceSchema from '@/components/seo/ServiceSchema';
 // 4. Import icons for navigation
 import { ChevronLeft, ArrowRight } from 'lucide-react'; 
 import React from 'react'; // Import React for createElement
@@ -89,6 +90,10 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   // 10. Render the service detail page
   return (
+        <>
+      {/* Service Schema for SEO */}
+      <ServiceSchema service={service} slug={slug} />
+
     <main className="min-h-screen pt-24 md:pt-40 pb-20 px-4">
       {/* Centering and max-width wrapper */}
       <div className="max-w-4xl mx-auto">
@@ -184,7 +189,8 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </section>
         {/* === END: ADDED RELATED SERVICES SECTION === */}
 
-      </div>
+           </div>
     </main>
+    </>
   );
 }

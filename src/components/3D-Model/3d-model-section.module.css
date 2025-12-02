@@ -1,0 +1,215 @@
+@reference "tailwindcss";
+
+.section {
+  @apply w-full max-w-6xl mx-auto py-20 px-4 font-[montserrat];
+}
+
+/* Main "Designed to Design" card */
+.glassCard {
+  @apply grid md:grid-cols-2 gap-8 items-center p-8 rounded-3xl border border-white/10;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(50px);
+}
+
+.cardTextContent h2 {
+  /* Mobile-first: start smaller */
+  @apply text-3xl text-gray-300 mb-4;
+}
+
+.cardTextContent p {
+  @apply text-base text-gray-400 leading-relaxed;
+}
+
+.cardImageContainer {
+  @apply  rounded-2xl;
+  aspect-ratio: 1 / 1;
+}
+
+/* Projects Grid */
+.projectsTitle {
+  @apply text-center text-2xl font-semibold font-[montserrat] tracking-widest text-gray-300 mt-16 mb-8;
+}
+
+/* === New Stacking Wrapper === */
+.projectsWrapper {
+  @apply relative grid grid-cols-1; 
+  /* This creates the stacking context */
+}
+
+/* Layer 1: The Blurred Background "Tray" */
+.projectsGridBackground {
+  @apply [grid-area:1/1] rounded-3xl z-0; 
+  /* Sits at the bottom */
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(50px);
+}
+
+/* Layer 2: The 3D Card Grid - STATIC 3 COLUMNS */
+.projectsGrid {
+  @apply [grid-area:1/1] relative z-10;
+  /* Static 3-column grid on all screen sizes */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+/* The 3D Card itself */
+.projectCard {
+  @apply pb-4 p-2 rounded-2xl transition-all duration-300;
+  background-color: rgba(14, 0, 0, 0.477);
+  /* Fix for mobile: ensure card can grow to fit content */
+  min-height: auto !important;
+  height: auto !important;
+}
+
+.projectCard:hover {
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.projectImageContainer {
+  @apply relative aspect-video w-full rounded-lg overflow-hidden mb-2;
+}
+
+.projectTitle {
+  @apply text-center font-semibold text-gray-300;
+  font-size: 0.625rem; /* Extra small on mobile - 10px */
+  padding: 0.25rem 0.125rem;
+  line-height: 1.2;
+}
+
+.projectDescription {
+  @apply text-center text-gray-400 mt-1;
+  font-size: 0.5rem; /* Extra small on mobile - 8px */
+  padding: 0 0.125rem 0.5rem;
+  line-height: 1.3;
+}
+
+.loadMoreButton {
+  @apply block mx-auto mt-12;
+  max-width: 80%; /* Better for mobile */
+}
+
+/* === Responsive Styles - Only sizes change, not structure === */
+
+/* Small phones and up (640px+) */
+@media (min-width: 640px) {
+  .cardTextContent h2 {
+    @apply text-5xl;
+  }
+  
+  .projectsTitle {
+    @apply text-3xl mt-20 mb-10;
+  }
+  
+  .projectsGrid {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .projectTitle {
+    font-size: 0.875rem; /* 14px */
+    padding: 0.375rem;
+    line-height: 1.3;
+  }
+  
+  .projectDescription {
+    font-size: 0.75rem; /* 12px */
+    padding: 0 0.5rem 0.625rem;
+    line-height: 1.4;
+  }
+  
+  .loadMoreButton {
+    max-width: 60%;
+  }
+}
+
+/* Tablets and up (768px+) */
+@media (min-width: 768px) {
+  .section {
+    @apply py-16 px-6;
+  }
+  
+  .glassCard {
+    @apply p-8;
+  }
+  
+  .cardTextContent h2 {
+    @apply text-6xl;
+  }
+  
+  .cardTextContent p {
+    @apply text-lg;
+  }
+  
+  .projectsTitle {
+    @apply text-4xl mt-24 mb-12;
+  }
+  
+  .projectsGrid {
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .projectTitle {
+    font-size: 1rem; /* 16px - Base size */
+    padding: 0.5rem 0.25rem;
+    line-height: 1.4;
+  }
+  
+  .projectDescription {
+    font-size: 0.875rem; /* 14px */
+    padding: 0 1rem 0.75rem;
+    line-height: 1.5;
+  }
+  
+  .loadMoreButton {
+    max-width: 40%;
+  }
+}
+
+/* Large tablets/desktop and up (1024px+) */
+@media (min-width: 1024px) {
+  .section {
+    @apply py-20 px-4;
+  }
+  
+  .cardTextContent h2 {
+    @apply text-8xl;
+  }
+  
+  .projectsGrid {
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .projectImageContainer {
+    margin-bottom: 1rem;
+  }
+  
+  .projectTitle {
+    font-size: 1.125rem; /* 18px - Larger on desktop */
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .projectDescription {
+    font-size: 0.875rem; /* 14px */
+    padding: 0 1rem 0.75rem;
+  }
+  
+  .loadMoreButton {
+    max-width: 20%;
+  }
+}
+
+/* Disable 3D transforms on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .projectCard {
+    transform: none !important;
+  }
+  
+  .projectCard:hover {
+    transform: none !important;
+  }
+}

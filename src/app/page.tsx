@@ -6,7 +6,7 @@ import Hero from "@/components/Hero/Hero";
 import Hero2 from "@/components/Hero/Hero2";
 import Services from "@/components/Services/Services";
 import ShowReel from "@/components/ShowReel/ShowReels";
-import PortfolioSection from "@/components/portfolio-section/PortfolioSection";
+import PortfolioSection from "@/components/3D-Model/3d-model-section";
 import ServicesMarquee from "@/components/Services/ServicesMarquee";
 import PartnersSection from "@/components/partners-section/PartnersSection";
 import { LogoItem } from '@/components/ui/LogoLoop';
