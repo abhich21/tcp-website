@@ -51,7 +51,7 @@
   backdrop-filter: blur(50px);
 }
 
-.carouselCard :global(.embla__dots) {
+.carouselCard:global(.embla__dots) {
   bottom: 0.75rem; /* Mobile dot position */
 }
 
