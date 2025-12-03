@@ -291,7 +291,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
                 'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120'
             )}
             src={(item as any).src}
-            srcSet={(item as any).srcSet}
+            // srcSet={(item as any).srcSet}
             sizes={(item as any).sizes}
             width={(item as any).width??100}
             height={(item as any).height??logoHeight}
