@@ -1,6 +1,8 @@
 // tumul901/tcp-website/tcp-website-d66ffaf1bb64fc577ab80a112ef9305a0440dc75/backend/prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

@@ -1,10 +1,13 @@
-# Ignore frontend Next.js files
+# Backend folders (not needed for frontend deployment)
+backend
+api
+
+# Standard ignores
+node_modules
 .next
-/src/
-/public/
-/components.json
-/next.config.ts
-/tsconfig.json
-/tailwind.config.ts
-/postcss.config.mjs
-/eslint.config.mjs
+.env.local
+.DS_Store
+*.log
+.git
+.gitignore
+README.md
