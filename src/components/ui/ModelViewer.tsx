@@ -155,7 +155,7 @@ export default function ModelViewer({ url, className }: Props) {
           <BoothModel url={url} />
 
           {/* DEPTH OF FIELD */}
-          <EffectComposer disableNormalPass>
+          <EffectComposer>
             <DepthOfField
               focusDistance={0.015}
               focalLength={0.02}
