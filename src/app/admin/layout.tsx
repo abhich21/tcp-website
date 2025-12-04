@@ -29,11 +29,11 @@ export default function AdminLayout({
         if (res.ok) {
           setIsAuthenticated(true);
         } else {
-          router.push(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`);
+          router.push(`/admin/login`);
         }
       } catch (error) {
         console.error("Auth check failed", error);
-        router.push(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`);
+        router.push(`/admin/login`);
       } finally {
         setIsLoading(false);
       }
