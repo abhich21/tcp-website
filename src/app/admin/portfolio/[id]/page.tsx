@@ -26,7 +26,7 @@ export default function EditPortfolioPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/admin/portfolio/${params.id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/portfolio/${params.id}`);
         if (res.ok) {
           const item = await res.json();
           setData(item);

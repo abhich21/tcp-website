@@ -25,15 +25,15 @@ export default function AdminLayout({
       }
 
       try {
-        const res = await fetch("/api/admin/auth/me");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/auth/me`);
         if (res.ok) {
           setIsAuthenticated(true);
         } else {
-          router.push("/admin/login");
+          router.push(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`);
         }
       } catch (error) {
         console.error("Auth check failed", error);
-        router.push("/admin/login");
+        router.push(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`);
       } finally {
         setIsLoading(false);
       }

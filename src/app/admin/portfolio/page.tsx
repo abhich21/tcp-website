@@ -66,7 +66,7 @@ export default function PortfolioPage() {
         queryParams.set("search", search.trim());
       }
       
-      const res = await fetch(`/api/admin/portfolio?${queryParams.toString()}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/portfolio?${queryParams.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch items");
       const data = await res.json();
 
@@ -127,7 +127,7 @@ export default function PortfolioPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to permanently delete this item?")) return;
     try {
-      const res = await fetch(`/api/admin/portfolio/${id}/permanent`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/portfolio/${id}/permanent`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -143,7 +143,7 @@ export default function PortfolioPage() {
   const handleArchive = async (id: number, isDeleted: boolean) => {
     const action = isDeleted ? "unarchive" : "archive";
     try {
-      const res = await fetch(`/api/admin/portfolio/${id}/${action}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/portfolio/${id}/${action}`, {
         method: "PUT",
       });
       if (res.ok) {
