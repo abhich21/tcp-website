@@ -37,14 +37,16 @@ const Header = () => {
       {/* HEADER */}
       <header className="sticky top-4 z-[80] mx-4 md:mx-auto max-w-5xl">
         <nav className={styles.navbar}>
-          <Image
-            src="/Cloudplay xp white logo.png"
-            alt="CloudPlayXP Logo"
-            width={80}
-            height={32}
-            className="w-20 md:w-24 lg:w-28"
-            priority
-          />
+          <Link href="/">
+            <Image
+              src="/Cloudplay xp white logo.png"
+              alt="CloudPlayXP Logo"
+              width={80}
+              height={32}
+              className="w-20 md:w-24 lg:w-28"
+              priority
+            />
+          </Link>
 
           {/* Desktop Nav */}
           <ul className="hidden md:flex items-center gap-6">
