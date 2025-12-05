@@ -25,7 +25,9 @@ export default function AdminLayout({
       }
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/auth/me`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/auth/me`, {
+          credentials: 'include'
+        });
         if (res.ok) {
           setIsAuthenticated(true);
         } else {

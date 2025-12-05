@@ -30,7 +30,9 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories`, {
+          credentials: 'include'
+        });
       if (res.ok) {
         const data = await res.json();
         setCategories(data);
@@ -86,6 +88,7 @@ export default function CategoriesPage() {
       const method = editingCategory ? "PUT" : "POST";
 
       const res = await fetch(url, {
+        credentials: 'include',
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -115,7 +118,10 @@ export default function CategoriesPage() {
     if (!confirm("Are you sure you want to delete this category?")) return;
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories/${id}`, { method: "DELETE" });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories/${id}`, { 
+        credentials: 'include',
+        method: "DELETE" 
+      });
       if (res.ok) {
         fetchCategories();
       } else {

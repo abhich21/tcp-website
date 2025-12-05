@@ -25,7 +25,9 @@ export default function MessagesPage() {
   const fetchMessages = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/messages`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/messages`, {
+          credentials: 'include'
+        });
       if (res.ok) {
         const data = await res.json();
         setMessages(data);
@@ -48,7 +50,10 @@ export default function MessagesPage() {
     if (!confirm("Are you sure you want to delete this message?")) return;
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/messages/${id}`, { method: "DELETE" });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/messages/${id}`, { 
+        credentials: 'include',
+        method: "DELETE" 
+      });
       if (res.ok) {
         fetchMessages();
       } else {
