@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Image from 'next/image';
 import styles from './3d-model-section.module.css';
 import ShineButton from '../ui/ShineButton';
@@ -7,18 +7,18 @@ import ModelViewer from '../ui/ModelViewer';
 
 // Dummy data for the project grid
 const projects = [
-  { 
-    title: 'Boombox Music Concert', 
+  {
+    title: 'Boombox Music Concert',
     description: 'An immersive audio-visual experience.',
     imageUrl: '/projects/project-1.png' // Path from /public folder
   },
-  { 
-    title: 'Boombox Music Concert', 
+  {
+    title: 'Boombox Music Concert',
     description: 'An immersive audio-visual experience.',
     imageUrl: '/projects/project-2.png' // Path from /public folder
   },
-  { 
-    title: 'Boombox Music Concert', 
+  {
+    title: 'Boombox Music Concert',
     description: 'An immersive audio-visual experience.',
     imageUrl: '/projects/project-3.png' // Path from /public folder
   },
@@ -32,18 +32,18 @@ const PortfolioSection = () => {
         <div className={styles.cardTextContent}>
           <h2 className='font-[montserrat]'>Designed To <span className="text-lime-400">Design</span></h2>
           <p className='font-[montserrat]'>
-            We create high-impact<span className="text-green-600"> event experiences</span> that move 
-            people and  
-               <span className="text-green-600"> elevate brands</span>—both online and on-site.         
+            We create high-impact<span className="text-green-600"> event experiences</span> that move
+            people and
+            <span className="text-green-600"> elevate brands</span>—both online and on-site.
           </p>
         </div>
-<div className={styles.cardImageContainer}>
-<div  style={{ aspectRatio: "1 / 1", position: "relative" }}>
-  <ModelViewer url="/3D-Model/photo-op-booth-3d.glb" />
-</div>
+        <div className={styles.cardImageContainer}>
+          <div style={{ aspectRatio: "1 / 1", position: "relative" }}>
+            <ModelViewer url="/3D-Model/photo-op-booth-3d.glb" />
+          </div>
 
 
-</div>
+        </div>
 
       </div>
 
@@ -113,4 +113,4 @@ const PortfolioSection = () => {
   );
 };
 
-export default PortfolioSection;
+export default memo(PortfolioSection);

@@ -2,8 +2,8 @@
 
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link'; // 1. Import Link
+import React, { memo } from 'react';
+import Link from 'next/link';
 import styles from './Services.module.css';
 import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import GlassCard from '../ui/GlassCard/GlassCard';
@@ -74,55 +74,56 @@ const servicesData = [
 ];
 
 const ServicesSection = () => {
-  
+
   return (
     <section className={styles.section}>
-      
-      
+
+
       {/* ---- ADD THIS SPACER DIV ---- */}
       {/* <div style={{ height: '50vh' }} />  */}
-<div>
-      <ScrollStack>
-         <div className={styles.cardContainer}><h2 className={styles.title}>Services We <span className="text-lime-400">Offer</span></h2>
-        {servicesData.map((service, index) => (
-          <ScrollStackItem key={index}>
-            <GlassCard className='mb-5 p-8 rounded-3xl'>
-              <div className={styles.cardContent}>
-                
-                {/* --- MODIFICATION START --- */}
-                {/* 1. New flex container for top row */}
-                <div className="flex justify-between items-start mb-6 w-full"> 
-                  
-                  {/* 2. Icon (styles.cardIcon no longer has mb-6) */}
-                  <div className={styles.cardIcon}>{service.icon}</div>
-                  
-                  {/* 3. "Know More" Link, moved and restyled */}
-                  <Link 
-                    href={`/services/${service.slug}`} 
-                    className="group text-lime-400 font-semibold text-sm inline-flex items-center gap-1 mt-1 flex-shrink-0" // smaller gap, smaller text, mt-1 for alignment
-                  >
-                    Know More
-                    <ArrowRight 
-                      size={16} 
-                      className="transition-transform duration-200 group-hover:translate-x-1" 
-                    />
-                  </Link>
-                </div>
-                {/* --- MODIFICATION END --- */}
+      <div>
+        <ScrollStack>
+          <div className={styles.cardContainer}><h2 className={styles.title}>Services We <span className="text-lime-400">Offer</span></h2>
+            {servicesData.map((service, index) => (
+              <ScrollStackItem key={index}>
+                <GlassCard className='mb-5 p-8 rounded-3xl'>
+                  <div className={styles.cardContent}>
 
-                <h3 className={styles.cardTitle}>{service.title}</h3>
-                <p className={styles.cardDescription}>{service.description}</p>
-                
-                {/* Link was here, now it's in the flex container above */}
-              </div>
-            </GlassCard>
-          </ScrollStackItem>
-        ))}
-        </div>
-      </ScrollStack>
+                    {/* --- MODIFICATION START --- */}
+                    {/* 1. New flex container for top row */}
+                    <div className="flex justify-between items-start mb-6 w-full">
+
+                      {/* 2. Icon (styles.cardIcon no longer has mb-6) */}
+                      <div className={styles.cardIcon}>{service.icon}</div>
+
+                      {/* 3. "Know More" Link, moved and restyled */}
+                      <Link
+                        href={`/services/${service.slug}`}
+                        className="group text-lime-400 font-semibold text-sm inline-flex items-center gap-1 mt-1 flex-shrink-0" // smaller gap, smaller text, mt-1 for alignment
+                      >
+                        Know More
+                        <ArrowRight
+                          size={16}
+                          className="transition-transform duration-200 group-hover:translate-x-1"
+                        />
+                      </Link>
+                    </div>
+                    {/* --- MODIFICATION END --- */}
+
+                    <h3 className={styles.cardTitle}>{service.title}</h3>
+                    <p className={styles.cardDescription}>{service.description}</p>
+
+                    {/* Link was here, now it's in the flex container above */}
+                  </div>
+                </GlassCard>
+              </ScrollStackItem>
+            ))}
+          </div>
+        </ScrollStack>
       </div>
     </section>
   );
 };
 
-export default ServicesSection;
+// Memoize component to prevent unnecessary re-renders
+export default memo(ServicesSection);

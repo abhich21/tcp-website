@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react'; // No change
+import React, { useState, memo } from 'react';
 import Image from 'next/image';
 import GlassCard from '../ui/GlassCard/GlassCard';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
@@ -41,7 +41,7 @@ const slideVariants = {
   }),
 };
 
-export const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials }) => {
+const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testimonials }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   // <-- CHANGED: Add new state to track animation direction
   const [direction, setDirection] = useState(0); // 0 = initial, 1 = next, -1 = prev
@@ -117,3 +117,11 @@ export const TestimonialCarousel: React.FC<TestimonialCarouselProps> = ({ testim
     </div>
   );
 };
+
+// Memoize with custom comparison - only re-render if testimonials array reference changes
+const MemoizedTestimonialCarousel = memo(TestimonialCarousel, (prevProps, nextProps) => {
+  return prevProps.testimonials === nextProps.testimonials;
+});
+
+export default MemoizedTestimonialCarousel;
+export { MemoizedTestimonialCarousel as TestimonialCarousel };

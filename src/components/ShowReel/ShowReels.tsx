@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './ShowReel.module.css';
 import GlassCard from '../ui/GlassCard/GlassCard';
 
@@ -34,6 +34,7 @@ const ShowReel: React.FC = () => {
             className={styles.reactPlayer}
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
+            loading="lazy"
           />
         </div>
       </GlassCard>
@@ -41,4 +42,4 @@ const ShowReel: React.FC = () => {
   );
 };
 
-export default ShowReel;
+export default memo(ShowReel);
